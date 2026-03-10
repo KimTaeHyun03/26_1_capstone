@@ -117,7 +117,7 @@ API 키 등 민감 정보는 **절대 프론트엔드(브라우저)에 노출하
 | 네이버 로컬 검색 API | 동물병원·보호소 검색 | 네이버 개발자 센터에서 키 발급 |
 | 기상청 단기예보 API | 날씨 데이터 (산책 판단) | 국내 서비스, 한국어, 무료 — 추천 |
 | OpenWeatherMap | 날씨 데이터 대안 | 영어, 간편하지만 미결정 |
-| Web Push API | 급식 알림 푸시 | Service Worker와 연동 |
+| Web Push API (PWA) | 급식 알림 푸시 | Service Worker + VAPID 키. Android 완전 지원, iOS 16.4+ 홈화면 추가 시 지원 |
 
 ### 3-8. 배포
 - **Cloudtype**: Node.js 백엔드 + React 프론트 모두 배포 가능, 무료 플랜 제공
@@ -285,7 +285,7 @@ RER(kcal)         = 70 × 체중(kg)^0.75
 | 테이블 | 주요 컬럼 | 용도 |
 |--------|-----------|------|
 | `users` | id, email, created_at | 사용자 계정 (Supabase Auth와 연동) |
-| `pets` | id, user_id, name, species(dog/cat), breed, age, weight | 반려동물 정보, user_id로 users 참조 |
+| `pets` | id, user_id, name, species(dog/cat), breed, birth_date, weight, neutered | 반려동물 정보, user_id로 users 참조. 나이는 birth_date로 자동 계산 |
 | `feeding_schedules` | id, pet_id, time, amount, enabled | 급식 스케줄, pet_id로 pets 참조 |
 | `health_logs` | id, pet_id, symptoms, diagnosis, created_at | 건강 체크 기록 |
 | `dangerous_foods` | id, name, risk_level, symptoms, species | 위험 음식 데이터 (정적 콘텐츠) |
@@ -304,7 +304,7 @@ users (1) ──< pets (N) ──< feeding_schedules (N)
   - `dangerous_foods`: ASPCA 자료 기반 직접 입력 (data_sources.md 참고)
   - `guide_content`: Gemini로 초안 생성 후 검토·수정
   - `training_guides`: Gemini로 초안 생성 후 검토·수정
-- `users` 테이블은 Supabase Auth의 `auth.users`와 별도로 `public.users`를 만들거나, Auth 메타데이터만 활용하는 방식 중 선택 필요
+- `users` 테이블은 `public.users`를 별도 생성 → 닉네임, 프로필 사진 등 커스텀 컬럼 저장 가능. 회원가입 시 서버에서 `auth.users`와 `public.users` 동시 생성
 
 ---
 

@@ -135,3 +135,29 @@ CLIENT_URL=
 | `training_guides` | 전체 공개 읽기, 수정 불가 |
 
 - [x] RLS 정책 검토 및 확정
+
+---
+
+## 🔵 구현 전 추가 확정 필요
+
+### 8. DB 설계 보완
+
+- [x] `pets` 테이블에 `neutered boolean` 컬럼 추가 (급여량 계산에 필요)
+- [x] `pets` 테이블 나이 저장 방식 결정 → `birth_date` 저장 후 date-fns로 자동 계산
+- [x] `users` 테이블 설계 결정 → `public.users` 별도 생성, 회원가입 시 서버에서 두 테이블 동시 생성
+
+---
+
+### 9. 환경변수 보완
+
+- [x] VAPID 키 추가 (Web Push 급식 알림에 필요) → `server/.env.example`에 추가 필요
+  - `VAPID_PUBLIC_KEY=`
+  - `VAPID_PRIVATE_KEY=`
+- [x] 푸시 알림 방식 확정 → PWA (Android 완전 지원, iOS 16.4+ 홈화면 추가 시 지원)
+
+---
+
+### 10. 미확보 데이터
+
+- [ ] `guide_content` 데이터 생성 (Gemini API 키 발급 후 초안 생성)
+- [ ] `training_guides` 데이터 생성 (Gemini API 키 발급 후 초안 생성)
