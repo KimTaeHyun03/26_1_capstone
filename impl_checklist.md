@@ -182,3 +182,15 @@ CLIENT_URL=
   - `basic` — 앉아, 기다려, 이리와, 엎드려
   - `behavior` — 짖음 교정, 분리불안, 공격성 교정
   - `trick` — 돌아, 악수, 죽어
+
+---
+
+### 12. 추가 확정 필요 (2차)
+
+- [ ] `VITE_NAVER_CLIENT_ID` 누락 → `client/.env.example`에 추가 필요 (네이버 지도 SDK 프론트 사용)
+- [ ] 증상 체크박스 목록 정의 (어떤 증상들이 나올지)
+- [ ] `guide_content.category` 종류 확정
+- [ ] `feeding_schedules.time` 저장 형식 결정 (HH:MM 문자열 vs timestamp)
+- [ ] `pets` 테이블 사진 컬럼 추가 여부 결정 (Supabase Storage 활용 여부)
+- [ ] `health_logs.diagnosis` 의미 확정 (AI 분석 결과 저장 vs 수의사 진단 저장)
+- [ ] research.md 미결정 사항 섹션 업데이트 (날씨 API·프레임워크 확정 반영)
