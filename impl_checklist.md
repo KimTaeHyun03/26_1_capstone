@@ -26,11 +26,14 @@
 > `guide_content`, `dangerous_foods`, `training_guides` 테이블에 넣을 데이터가 없으면 ①⑤⑦ 기능이 동작하지 않음
 
 - [x] 데이터 입력 방식 결정 → SQL 파일로 직접 작성 후 Supabase에 import 확정
-- [ ] 데이터 수집 방법 결정
-  - 직접 작성
-  - 공공 API 또는 공개 데이터 활용
-  - 크롤링
-- [ ] 최소 초기 데이터 분량 산정 (기능 테스트 가능한 수준)
+- [x] 데이터 수집 방법 결정
+  - `dangerous_foods` → ASPCA 자료 보고 직접 SQL 입력 (data_sources.md 참고) ✅ 완료
+  - `guide_content` → Gemini로 초안 생성 후 검토·수정 ❌ 미완료
+  - `training_guides` → Gemini로 초안 생성 후 검토·수정 ❌ 미완료
+- [x] 최소 초기 데이터 분량 산정 (기능 테스트 가능한 수준)
+  - `dangerous_foods` → 9개 (ASPCA 기반, 이미 확보)
+  - `guide_content` → 6개 (강아지 3개 + 고양이 3개 / 기초준비·식사·건강관리)
+  - `training_guides` → 3개 (강아지 기준 / 앉아·기다려·이리와)
 
 ---
 
@@ -41,6 +44,7 @@
 
 | Method | Endpoint | 설명 |
 |--------|----------|------|
+| POST | `/api/auth/register` | 회원가입 |
 | POST | `/api/auth/login` | 로그인 |
 | POST | `/api/auth/logout` | 로그아웃 |
 | GET | `/api/pets` | 내 반려동물 목록 조회 |
@@ -49,41 +53,44 @@
 | DELETE | `/api/pets/:id` | 반려동물 삭제 |
 | GET | `/api/feeding/:petId` | 급식 스케줄 조회 |
 | POST | `/api/feeding` | 급식 스케줄 등록 |
+| PUT | `/api/feeding/:id` | 급식 스케줄 수정 |
+| DELETE | `/api/feeding/:id` | 급식 스케줄 삭제 |
 | GET | `/api/health/:petId` | 건강 기록 조회 |
 | POST | `/api/health` | 건강 체크 기록 저장 |
 | GET | `/api/foods/search?q=` | 위험 음식 검색 |
 | GET | `/api/guide?species=` | 보호자 가이드 조회 |
 | GET | `/api/training?species=` | 훈련 가이드 조회 |
 | GET | `/api/map/hospitals?lat=&lng=` | 주변 동물병원 검색 |
+| GET | `/api/map/shelters?lat=&lng=` | 주변 보호소 검색 |
 | GET | `/api/walk?petId=&lat=&lng=` | 산책 가능 여부 판단 |
 | POST | `/api/ai/diagnosis` | AI 병명 예측 |
 
-- [ ] 엔드포인트 검토 및 확정
-- [ ] 누락된 엔드포인트 추가
+- [x] 엔드포인트 검토 및 확정
+- [x] 누락된 엔드포인트 추가
 
 ---
 
 ### 5. React Router URL 경로 설계
 
-| URL | 페이지 | 비고 |
-|-----|--------|------|
-| `/` | 홈 (대시보드) | |
-| `/login` | 로그인 | |
-| `/register` | 회원가입 | |
-| `/pets` | 반려동물 목록 | |
-| `/pets/new` | 반려동물 등록 | |
-| `/pets/:id` | 반려동물 상세 | |
-| `/guide` | 초보 보호자 가이드 | |
-| `/feeding` | 급식 알림·계산기 | |
-| `/health` | 증상 건강 체크 | |
-| `/map` | 동물병원·보호소 지도 | |
-| `/food` | 위험 음식 검색 | |
-| `/walk` | 산책 가능 여부 | |
-| `/training` | 훈련 가이드 | |
-| `/ai-diagnosis` | AI 병명 예측 | |
+| URL | 페이지 | 인증 필요 |
+|-----|--------|-----------|
+| `/login` | 로그인 | ❌ |
+| `/register` | 회원가입 | ❌ |
+| `/guide` | 초보 보호자 가이드 | ❌ |
+| `/food` | 위험 음식 검색 | ❌ |
+| `/training` | 훈련 가이드 | ❌ |
+| `/` | 홈 (대시보드) | ✅ |
+| `/pets` | 반려동물 목록 | ✅ |
+| `/pets/new` | 반려동물 등록 | ✅ |
+| `/pets/:id` | 반려동물 상세 | ✅ |
+| `/feeding` | 급식 알림·계산기 | ✅ |
+| `/health` | 증상 건강 체크 | ✅ |
+| `/map` | 동물병원·보호소 지도 | ✅ |
+| `/walk` | 산책 가능 여부 | ✅ |
+| `/ai-diagnosis` | AI 병명 예측 | ✅ |
 
-- [ ] URL 경로 검토 및 확정
-- [ ] 인증 필요한 페이지 구분 (로그인 없이 접근 가능 vs 불가)
+- [x] URL 경로 검토 및 확정
+- [x] 인증 필요한 페이지 구분 (로그인 없이 접근 가능 vs 불가)
 
 ---
 
@@ -108,8 +115,9 @@ WEATHER_API_KEY=
 CLIENT_URL=
 ```
 
-- [ ] 키 이름 확정
-- [ ] 누락된 환경 변수 추가
+- [x] 키 이름 확정
+- [x] 누락된 환경 변수 추가
+- [ ] 실제 값 입력 → 구현 시작 전 별도 추가 예정
 
 ---
 
@@ -126,4 +134,4 @@ CLIENT_URL=
 | `guide_content` | 전체 공개 읽기, 수정 불가 |
 | `training_guides` | 전체 공개 읽기, 수정 불가 |
 
-- [ ] RLS 정책 검토 및 확정
+- [x] RLS 정책 검토 및 확정

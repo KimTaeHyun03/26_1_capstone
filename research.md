@@ -300,7 +300,10 @@ users (1) ──< pets (N) ──< feeding_schedules (N)
 
 **주목할 설계:**
 - `training_guides.steps`를 JSON 컬럼으로 설계 → 훈련 단계가 가변적이므로 JSON이 적합
-- `dangerous_foods`, `guide_content`, `training_guides`는 정적 콘텐츠 테이블로, 관리자가 사전에 데이터를 입력해야 서비스 가능
+- `dangerous_foods`, `guide_content`, `training_guides`는 정적 콘텐츠 테이블로, SQL 파일로 직접 작성 후 Supabase에 import
+  - `dangerous_foods`: ASPCA 자료 기반 직접 입력 (data_sources.md 참고)
+  - `guide_content`: Gemini로 초안 생성 후 검토·수정
+  - `training_guides`: Gemini로 초안 생성 후 검토·수정
 - `users` 테이블은 Supabase Auth의 `auth.users`와 별도로 `public.users`를 만들거나, Auth 메타데이터만 활용하는 방식 중 선택 필요
 
 ---
