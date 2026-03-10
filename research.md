@@ -284,13 +284,13 @@ RER(kcal)         = 70 × 체중(kg)^0.75
 
 | 테이블 | 주요 컬럼 | 용도 |
 |--------|-----------|------|
-| `users` | id, email, created_at | 사용자 계정 (Supabase Auth와 연동) |
+| `users` | id, email, nickname, created_at, updated_at | 사용자 계정 (Supabase Auth와 연동) |
 | `pets` | id, user_id, name, species(dog/cat), breed, birth_date, weight, neutered | 반려동물 정보, user_id로 users 참조. 나이는 birth_date로 자동 계산 |
 | `feeding_schedules` | id, pet_id, time, amount, enabled | 급식 스케줄, pet_id로 pets 참조 |
-| `health_logs` | id, pet_id, symptoms, diagnosis, created_at | 건강 체크 기록 |
+| `health_logs` | id, pet_id, symptoms(json), diagnosis, created_at | 건강 체크 기록. symptoms는 체크박스 선택형으로 JSON 배열 저장 (예: ["구토", "무기력"]) |
 | `dangerous_foods` | id, name, risk_level, symptoms, species | 위험 음식 데이터 (정적 콘텐츠) |
 | `guide_content` | id, category, species, title, content, step_order | 가이드 콘텐츠 (정적, step_order로 순서 관리) |
-| `training_guides` | id, category, title, steps(json), difficulty | 훈련 가이드, steps를 JSON으로 저장 |
+| `training_guides` | id, category, title, steps(json), difficulty | 훈련 가이드, steps를 JSON으로 저장. category: basic(기초)/behavior(교정)/trick(재주) |
 
 **관계 요약:**
 ```

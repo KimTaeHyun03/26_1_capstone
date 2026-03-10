@@ -101,6 +101,7 @@
 VITE_SUPABASE_URL=
 VITE_SUPABASE_ANON_KEY=
 VITE_API_BASE_URL=
+VITE_VAPID_PUBLIC_KEY=
 ```
 
 **server/.env.example**
@@ -154,6 +155,8 @@ CLIENT_URL=
   - `VAPID_PUBLIC_KEY=`
   - `VAPID_PRIVATE_KEY=`
 - [x] 푸시 알림 방식 확정 → PWA (Android 완전 지원, iOS 16.4+ 홈화면 추가 시 지원)
+- [x] 날씨 API 확정 → 기상청 단기예보 API (무료, 공공데이터포털에서 키 발급)
+- [x] `VITE_VAPID_PUBLIC_KEY` 누락 → `client/.env.example`에 추가 완료
 
 ---
 
@@ -161,3 +164,21 @@ CLIENT_URL=
 
 - [ ] `guide_content` 데이터 생성 (Gemini API 키 발급 후 초안 생성)
 - [ ] `training_guides` 데이터 생성 (Gemini API 키 발급 후 초안 생성)
+
+---
+
+### 11. 추가 확정 필요
+
+- [x] `public.users` 추가 컬럼 결정 → `id, email, nickname, created_at, updated_at`
+- [x] ③ 증상 건강 체크 입력 방식 결정 → 체크박스 선택형 확정 (추후 변경 가능)
+- [x] `training_guides.steps` JSON 구조 정의
+  ```json
+  [
+    { "step": 1, "title": "단계명", "description": "단계 설명" },
+    { "step": 2, "title": "단계명", "description": "단계 설명" }
+  ]
+  ```
+- [x] `training_guides.category` 종류 확정
+  - `basic` — 앉아, 기다려, 이리와, 엎드려
+  - `behavior` — 짖음 교정, 분리불안, 공격성 교정
+  - `trick` — 돌아, 악수, 죽어
