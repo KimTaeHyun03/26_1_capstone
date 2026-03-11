@@ -424,6 +424,8 @@ users (1) ──< pets (N) ──< feeding_schedules (N)
 | GET | `/api/map/shelters?lat=&lng=` | 주변 보호소 검색 |
 | GET | `/api/walk?petId=&lat=&lng=` | 산책 가능 여부 판단 |
 | POST | `/api/ai/diagnosis` | AI 병명 예측 |
+| POST | `/api/push/subscribe` | 푸시 구독 정보 저장 |
+| DELETE | `/api/push/unsubscribe` | 푸시 구독 취소 |
 
 ---
 
