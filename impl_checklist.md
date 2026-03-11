@@ -101,6 +101,8 @@
 VITE_SUPABASE_URL=
 VITE_SUPABASE_ANON_KEY=
 VITE_API_BASE_URL=
+VITE_VAPID_PUBLIC_KEY=
+VITE_NAVER_CLIENT_ID=
 ```
 
 **server/.env.example**
@@ -113,6 +115,8 @@ NAVER_CLIENT_ID=
 NAVER_CLIENT_SECRET=
 WEATHER_API_KEY=
 CLIENT_URL=
+VAPID_PUBLIC_KEY=
+VAPID_PRIVATE_KEY=
 ```
 
 - [x] 키 이름 확정
@@ -133,6 +137,7 @@ CLIENT_URL=
 | `dangerous_foods` | 전체 공개 읽기, 수정 불가 |
 | `guide_content` | 전체 공개 읽기, 수정 불가 |
 | `training_guides` | 전체 공개 읽기, 수정 불가 |
+| `push_subscriptions` | 본인 데이터만 CRUD 가능 |
 
 - [x] RLS 정책 검토 및 확정
 
@@ -154,6 +159,8 @@ CLIENT_URL=
   - `VAPID_PUBLIC_KEY=`
   - `VAPID_PRIVATE_KEY=`
 - [x] 푸시 알림 방식 확정 → PWA (Android 완전 지원, iOS 16.4+ 홈화면 추가 시 지원)
+- [x] 날씨 API 확정 → 기상청 초단기실황 API (무료, 공공데이터포털에서 키 발급)
+- [x] `VITE_VAPID_PUBLIC_KEY` 누락 → `client/.env.example`에 추가 완료
 
 ---
 
@@ -161,3 +168,53 @@ CLIENT_URL=
 
 - [ ] `guide_content` 데이터 생성 (Gemini API 키 발급 후 초안 생성)
 - [ ] `training_guides` 데이터 생성 (Gemini API 키 발급 후 초안 생성)
+
+---
+
+### 11. 추가 확정 필요
+
+- [x] `public.users` 추가 컬럼 결정 → `id, email, nickname, created_at, updated_at`
+- [x] ③ 증상 건강 체크 입력 방식 결정 → 체크박스 선택형 확정 (추후 변경 가능)
+- [x] `training_guides.steps` JSON 구조 정의
+  ```json
+  [
+    { "step": 1, "title": "단계명", "description": "단계 설명" },
+    { "step": 2, "title": "단계명", "description": "단계 설명" }
+  ]
+  ```
+- [x] `training_guides.category` 종류 확정
+  - `basic` — 앉아, 기다려, 이리와, 엎드려
+  - `behavior` — 짖음 교정, 분리불안, 공격성 교정
+  - `trick` — 돌아, 악수, 죽어
+
+---
+
+### 12. 추가 확정 필요 (2차)
+
+- [x] `VITE_NAVER_CLIENT_ID` 누락 → `client/.env.example`에 추가 완료 (네이버 지도 SDK 프론트 사용)
+- [x] 증상 체크박스 목록 정의 (강아지·고양이 공통, 총 21개)
+  - 소화기: 구토, 설사, 변비, 식욕 저하, 과식
+  - 호흡기: 기침, 재채기, 코막힘, 호흡 곤란
+  - 행동: 무기력, 과도한 긁음, 공격성 증가, 숨기
+  - 외형: 눈곱·눈물, 털 빠짐, 피부 발진, 절뚝거림
+  - 배뇨: 소변 횟수 증가, 혈뇨, 소변 못 봄
+  - 기타: 체중 감소, 발열, 과도한 음수량
+- [x] `guide_content.category` 종류 확정
+  - `preparation` — 기초 준비 (처음 맞이하기, 준비물 등)
+  - `feeding` — 식사·영양 관리
+  - `health` — 건강 관리·예방접종
+  - `grooming` — 그루밍·위생
+  - `behavior` — 행동·습관 이해
+  - 초기 데이터는 preparation·feeding·health 3개만 작성, 나머지 추후 추가
+- [x] `feeding_schedules.time` 저장 형식 결정 → `HH:MM` 문자열 확정 (급식은 매일 반복, 날짜 불필요)
+- [x] `pets` 테이블 사진 컬럼 추가 여부 결정 → 미추가 확정 (핵심 기능 아님, 추후 필요 시 추가)
+- [x] `health_logs.diagnosis` 의미 확정 → AI 분석 결과 저장 확정 (Gemini 응답 텍스트, 수의사 진단은 앱 범위 밖)
+- [x] research.md 미결정 사항 섹션 업데이트 (AI·날씨 API·프레임워크 확정 반영, DB 설계 세부사항 반영)
+
+---
+
+### 13. 추가 확정 필요 (3차)
+
+- [ ] 홈 대시보드(`/`) 표시 내용 정의 (어떤 정보를 보여줄지)
+- [x] ③ 증상 건강 체크 로직 확정 → Gemini만 사용 확정 (증상 체크박스 선택 → Gemini 전달 → AI 분석 결과 → health_logs.diagnosis 저장. DB 매핑 테이블 없음)
+- [x] `push_subscriptions` 테이블 RLS 정책 추가 → 본인 구독 정보만 CRUD 확정
