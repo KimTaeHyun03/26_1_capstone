@@ -34,7 +34,7 @@
 |---|------|--------------|
 | ② | 급식 알림·급여량 계산기 | Web Push API + Service Worker |
 | ④ | 동물병원·보호소 찾기 | 네이버 지도 API + 네이버 로컬 검색 API |
-| ⑥ | 산책 가능 여부 판단 | 기상청 단기예보 API or OpenWeatherMap |
+| ⑥ | 산책 가능 여부 판단 | 기상청 초단기실황 API |
 
 ### 2-3. AI 기반 기능
 | # | 기능 | 설명 |
@@ -107,7 +107,7 @@ API 키 등 민감 정보는 **절대 프론트엔드(브라우저)에 노출하
 | 기상청 API key | 서버만 | |
 
 ### 3-6. AI
-- **Google Gemini Flash API** (추천)
+- **Google Gemini Flash API** (확정)
   - 무료 티어: 분당 15 req, 일 1,500 req → 캡스톤 수준에서 사실상 무료
   - Claude API 대비 비용 부담 없이 유사한 성능 제공
   - 수의학 프롬프트 설계로 ③⑧ 기능 구현
@@ -169,9 +169,9 @@ const OLON = 126.0, OLAT = 38.0, XO = 43, YO = 136;
   → Web Push 알림 전송 (VAPID 서명)
 ```
 
-- 서버에 `node-cron` 라이브러리 추가 필요
+- 서버에 `node-cron` 라이브러리 추가 완료 (3-4 백엔드 라이브러리 목록 참고)
 - 클라이언트는 Service Worker 등록 후 구독 정보를 서버에 저장 (push_subscriptions 테이블)
-- `push_subscriptions` 테이블 DB에 추가 필요 (아래 DB 설계 참고)
+- `push_subscriptions` 테이블 DB 설계에 추가 완료 (7번 DB 설계 참고)
 
 ### 3-8. 배포
 - **Cloudtype**: Node.js 백엔드 + React 프론트 모두 배포 가능, 무료 플랜 제공
@@ -392,7 +392,7 @@ users (1) ──< pets (N) ──< feeding_schedules (N)
 | 항목 | 확정 내용 |
 |------|-----------|
 | AI 방식 | **Gemini Flash API** — 무료 티어로 캡스톤 수준 충분 |
-| 날씨 API | **기상청 단기예보 API** — 국내 서비스, 한국어, 무료 |
+| 날씨 API | **기상청 초단기실황 API** — 국내 서비스, 한국어, 무료 |
 | Node.js 프레임워크 | **Express** — 학습 자료 풍부, 빠른 개발 가능 |
 
 ---
