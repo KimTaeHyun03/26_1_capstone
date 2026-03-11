@@ -159,7 +159,7 @@ VAPID_PRIVATE_KEY=
   - `VAPID_PUBLIC_KEY=`
   - `VAPID_PRIVATE_KEY=`
 - [x] 푸시 알림 방식 확정 → PWA (Android 완전 지원, iOS 16.4+ 홈화면 추가 시 지원)
-- [x] 날씨 API 확정 → 기상청 단기예보 API (무료, 공공데이터포털에서 키 발급)
+- [x] 날씨 API 확정 → 기상청 초단기실황 API (무료, 공공데이터포털에서 키 발급)
 - [x] `VITE_VAPID_PUBLIC_KEY` 누락 → `client/.env.example`에 추가 완료
 
 ---

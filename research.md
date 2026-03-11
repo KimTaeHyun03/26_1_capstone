@@ -383,7 +383,7 @@ users (1) ──< pets (N) ──< feeding_schedules (N)
 - 콘텐츠 테이블(dangerous_foods, guide_content, training_guides)에 들어갈 실제 데이터 수집·입력 작업이 일정에 명시되어 있지 않음
 - Gemini API 프롬프트 설계·튜닝은 반복 작업이 많으므로 9~10주가 빠듯할 수 있음
 - Service Worker(Web Push)는 브라우저 환경별 동작 차이가 있어 테스트 공수가 클 수 있음
-- 기상청 단기예보 API는 공공데이터포털 인증키 발급 및 API 포맷 파악에 초기 시간이 소요됨
+- 기상청 초단기실황 API는 공공데이터포털 인증키 발급 및 API 포맷 파악에 초기 시간이 소요됨
 
 ---
 
