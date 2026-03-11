@@ -187,10 +187,22 @@ CLIENT_URL=
 
 ### 12. 추가 확정 필요 (2차)
 
-- [ ] `VITE_NAVER_CLIENT_ID` 누락 → `client/.env.example`에 추가 필요 (네이버 지도 SDK 프론트 사용)
-- [ ] 증상 체크박스 목록 정의 (어떤 증상들이 나올지)
-- [ ] `guide_content.category` 종류 확정
-- [ ] `feeding_schedules.time` 저장 형식 결정 (HH:MM 문자열 vs timestamp)
-- [ ] `pets` 테이블 사진 컬럼 추가 여부 결정 (Supabase Storage 활용 여부)
-- [ ] `health_logs.diagnosis` 의미 확정 (AI 분석 결과 저장 vs 수의사 진단 저장)
-- [ ] research.md 미결정 사항 섹션 업데이트 (날씨 API·프레임워크 확정 반영)
+- [x] `VITE_NAVER_CLIENT_ID` 누락 → `client/.env.example`에 추가 완료 (네이버 지도 SDK 프론트 사용)
+- [x] 증상 체크박스 목록 정의 (강아지·고양이 공통, 총 21개)
+  - 소화기: 구토, 설사, 변비, 식욕 저하, 과식
+  - 호흡기: 기침, 재채기, 코막힘, 호흡 곤란
+  - 행동: 무기력, 과도한 긁음, 공격성 증가, 숨기
+  - 외형: 눈곱·눈물, 털 빠짐, 피부 발진, 절뚝거림
+  - 배뇨: 소변 횟수 증가, 혈뇨, 소변 못 봄
+  - 기타: 체중 감소, 발열, 과도한 음수량
+- [x] `guide_content.category` 종류 확정
+  - `preparation` — 기초 준비 (처음 맞이하기, 준비물 등)
+  - `feeding` — 식사·영양 관리
+  - `health` — 건강 관리·예방접종
+  - `grooming` — 그루밍·위생
+  - `behavior` — 행동·습관 이해
+  - 초기 데이터는 preparation·feeding·health 3개만 작성, 나머지 추후 추가
+- [x] `feeding_schedules.time` 저장 형식 결정 → `HH:MM` 문자열 확정 (급식은 매일 반복, 날짜 불필요)
+- [x] `pets` 테이블 사진 컬럼 추가 여부 결정 → 미추가 확정 (핵심 기능 아님, 추후 필요 시 추가)
+- [x] `health_logs.diagnosis` 의미 확정 → AI 분석 결과 저장 확정 (Gemini 응답 텍스트, 수의사 진단은 앱 범위 밖)
+- [x] research.md 미결정 사항 섹션 업데이트 (AI·날씨 API·프레임워크 확정 반영, DB 설계 세부사항 반영)

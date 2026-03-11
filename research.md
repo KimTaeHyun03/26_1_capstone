@@ -286,10 +286,10 @@ RER(kcal)         = 70 × 체중(kg)^0.75
 |--------|-----------|------|
 | `users` | id, email, nickname, created_at, updated_at | 사용자 계정 (Supabase Auth와 연동) |
 | `pets` | id, user_id, name, species(dog/cat), breed, birth_date, weight, neutered | 반려동물 정보, user_id로 users 참조. 나이는 birth_date로 자동 계산 |
-| `feeding_schedules` | id, pet_id, time, amount, enabled | 급식 스케줄, pet_id로 pets 참조 |
-| `health_logs` | id, pet_id, symptoms(json), diagnosis, created_at | 건강 체크 기록. symptoms는 체크박스 선택형으로 JSON 배열 저장 (예: ["구토", "무기력"]) |
+| `feeding_schedules` | id, pet_id, time, amount, enabled | 급식 스케줄, pet_id로 pets 참조. time은 `HH:MM` 문자열 형식 (매일 반복이므로 날짜 불필요) |
+| `health_logs` | id, pet_id, symptoms(json), diagnosis, created_at | 건강 체크 기록. symptoms는 체크박스 선택형 JSON 배열 (예: ["구토", "무기력"]). diagnosis는 Gemini AI 분석 결과 텍스트 저장 |
 | `dangerous_foods` | id, name, risk_level, symptoms, species | 위험 음식 데이터 (정적 콘텐츠) |
-| `guide_content` | id, category, species, title, content, step_order | 가이드 콘텐츠 (정적, step_order로 순서 관리) |
+| `guide_content` | id, category, species, title, content, step_order | 가이드 콘텐츠 (정적, step_order로 순서 관리). category: preparation·feeding·health·grooming·behavior |
 | `training_guides` | id, category, title, steps(json), difficulty | 훈련 가이드, steps를 JSON으로 저장. category: basic(기초)/behavior(교정)/trick(재주) |
 
 **관계 요약:**
@@ -331,13 +331,13 @@ users (1) ──< pets (N) ──< feeding_schedules (N)
 
 ---
 
-## 7. 미결정 사항 및 권고
+## 7. 확정 사항
 
-| 항목 | 옵션 A | 옵션 B | 권고 |
-|------|--------|--------|------|
-| AI 방식 | Gemini Flash API (무료 티어, 간단) | OpenAI gpt-4o-mini (저렴, 유료) | **Gemini Flash** — 무료 티어로 캡스톤 수준 충분 |
-| 날씨 API | 기상청 단기예보 API (한국어, 무료) | OpenWeatherMap (영어, 간편) | **기상청 API** — 국내 서비스이므로 적합, 단 인증키 발급 절차 필요 |
-| Node.js 프레임워크 | Express (익숙함, 레퍼런스 많음) | Fastify (빠름, 현대적) | **Express** — 학습 자료 풍부, 빠른 개발 가능 |
+| 항목 | 확정 내용 |
+|------|-----------|
+| AI 방식 | **Gemini Flash API** — 무료 티어로 캡스톤 수준 충분 |
+| 날씨 API | **기상청 단기예보 API** — 국내 서비스, 한국어, 무료 |
+| Node.js 프레임워크 | **Express** — 학습 자료 풍부, 빠른 개발 가능 |
 
 ---
 
