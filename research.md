@@ -362,9 +362,120 @@ users (1) ──< pets (N) ──< feeding_schedules (N)
   - `training_guides`: Gemini로 초안 생성 후 검토·수정
 - `users` 테이블은 `public.users`를 별도 생성 → 닉네임, 프로필 사진 등 커스텀 컬럼 저장 가능. 회원가입 시 서버에서 `auth.users`와 `public.users` 동시 생성
 
+**증상 체크박스 목록 (health_logs.symptoms JSON 배열 값, 강아지·고양이 공통):**
+
+| 분류 | 증상 목록 |
+|------|----------|
+| 소화기 | 구토, 설사, 변비, 식욕 저하, 과식 |
+| 호흡기 | 기침, 재채기, 코막힘, 호흡 곤란 |
+| 행동 | 무기력, 과도한 긁음, 공격성 증가, 숨기 |
+| 외형 | 눈곱·눈물, 털 빠짐, 피부 발진, 절뚝거림 |
+| 배뇨 | 소변 횟수 증가, 혈뇨, 소변 못 봄 |
+| 기타 | 체중 감소, 발열, 과도한 음수량 |
+
+**training_guides.steps JSON 구조:**
+```json
+[
+  { "step": 1, "title": "단계명", "description": "단계 설명" },
+  { "step": 2, "title": "단계명", "description": "단계 설명" }
+]
+```
+
 ---
 
-## 8. 개발 일정 분석 (12주)
+## 8. Supabase RLS 정책
+
+> RLS 없으면 다른 유저의 데이터에 접근 가능 → 보안 필수
+
+| 테이블 | 정책 |
+|--------|------|
+| `users` | 본인 데이터만 조회·수정 가능 |
+| `pets` | user_id가 본인인 row만 CRUD 가능 |
+| `feeding_schedules` | pet의 owner가 본인인 경우만 CRUD 가능 |
+| `health_logs` | pet의 owner가 본인인 경우만 CRUD 가능 |
+| `dangerous_foods` | 전체 공개 읽기, 수정 불가 |
+| `guide_content` | 전체 공개 읽기, 수정 불가 |
+| `training_guides` | 전체 공개 읽기, 수정 불가 |
+| `push_subscriptions` | 본인 데이터만 CRUD 가능 |
+
+---
+
+## 9. API 엔드포인트
+
+| Method | Endpoint | 설명 |
+|--------|----------|------|
+| POST | `/api/auth/register` | 회원가입 |
+| POST | `/api/auth/login` | 로그인 |
+| POST | `/api/auth/logout` | 로그아웃 |
+| GET | `/api/pets` | 내 반려동물 목록 조회 |
+| POST | `/api/pets` | 반려동물 등록 |
+| PUT | `/api/pets/:id` | 반려동물 정보 수정 |
+| DELETE | `/api/pets/:id` | 반려동물 삭제 |
+| GET | `/api/feeding/:petId` | 급식 스케줄 조회 |
+| POST | `/api/feeding` | 급식 스케줄 등록 |
+| PUT | `/api/feeding/:id` | 급식 스케줄 수정 |
+| DELETE | `/api/feeding/:id` | 급식 스케줄 삭제 |
+| GET | `/api/health/:petId` | 건강 기록 조회 |
+| POST | `/api/health` | 건강 체크 기록 저장 |
+| GET | `/api/foods/search?q=` | 위험 음식 검색 |
+| GET | `/api/guide?species=` | 보호자 가이드 조회 |
+| GET | `/api/training?species=` | 훈련 가이드 조회 |
+| GET | `/api/map/hospitals?lat=&lng=` | 주변 동물병원 검색 |
+| GET | `/api/map/shelters?lat=&lng=` | 주변 보호소 검색 |
+| GET | `/api/walk?petId=&lat=&lng=` | 산책 가능 여부 판단 |
+| POST | `/api/ai/diagnosis` | AI 병명 예측 |
+
+---
+
+## 10. React Router URL 경로
+
+| URL | 페이지 | 인증 필요 |
+|-----|--------|-----------|
+| `/login` | 로그인 | ❌ |
+| `/register` | 회원가입 | ❌ |
+| `/guide` | 초보 보호자 가이드 | ❌ |
+| `/food` | 위험 음식 검색 | ❌ |
+| `/training` | 훈련 가이드 | ❌ |
+| `/` | 홈 (대시보드) | ✅ |
+| `/pets` | 반려동물 목록 | ✅ |
+| `/pets/new` | 반려동물 등록 | ✅ |
+| `/pets/:id` | 반려동물 상세 | ✅ |
+| `/feeding` | 급식 알림·계산기 | ✅ |
+| `/health` | 증상 건강 체크 | ✅ |
+| `/map` | 동물병원·보호소 지도 | ✅ |
+| `/walk` | 산책 가능 여부 | ✅ |
+| `/ai-diagnosis` | AI 병명 예측 | ✅ |
+
+---
+
+## 11. 환경 변수
+
+**client/.env.example**
+```
+VITE_SUPABASE_URL=
+VITE_SUPABASE_ANON_KEY=
+VITE_API_BASE_URL=
+VITE_VAPID_PUBLIC_KEY=
+VITE_NAVER_CLIENT_ID=
+```
+
+**server/.env.example**
+```
+PORT=
+SUPABASE_URL=
+SUPABASE_SERVICE_KEY=
+GEMINI_API_KEY=
+NAVER_CLIENT_ID=
+NAVER_CLIENT_SECRET=
+WEATHER_API_KEY=
+CLIENT_URL=
+VAPID_PUBLIC_KEY=
+VAPID_PRIVATE_KEY=
+```
+
+---
+
+## 12. 개발 일정 분석 (12주)
 
 | 상태 | 주차 | 내용 | 분류 |
 |------|------|------|------|
@@ -387,7 +498,7 @@ users (1) ──< pets (N) ──< feeding_schedules (N)
 
 ---
 
-## 9. 확정 사항
+## 13. 확정 사항
 
 | 항목 | 확정 내용 |
 |------|-----------|
@@ -397,7 +508,7 @@ users (1) ──< pets (N) ──< feeding_schedules (N)
 
 ---
 
-## 10. 현재 폴더 상태
+## 14. 현재 폴더 상태
 
 ```
 D:/ysu_26_1/capstone/pet_management/
@@ -411,7 +522,7 @@ D:/ysu_26_1/capstone/pet_management/
 
 ---
 
-## 11. 시작 순서
+## 15. 시작 순서
 
 1. `npm create vite@latest client -- --template react-ts` 로 프론트 프로젝트 생성
 2. `server/` 폴더 생성 후 Node.js + Express 초기 셋업
@@ -424,7 +535,7 @@ D:/ysu_26_1/capstone/pet_management/
 
 ---
 
-## 12. 다음 단계
+## 16. 다음 단계
 
 1. **API 키 준비**: 네이버 개발자 센터, 기상청 API 인증키, Google AI Studio (Gemini), Supabase 프로젝트 생성
 2. **콘텐츠 데이터 생성**: guide_content (6개), training_guides (3개) SQL 파일 작성 (Gemini 초안 활용)
