@@ -102,6 +102,7 @@ VITE_SUPABASE_URL=
 VITE_SUPABASE_ANON_KEY=
 VITE_API_BASE_URL=
 VITE_VAPID_PUBLIC_KEY=
+VITE_NAVER_CLIENT_ID=
 ```
 
 **server/.env.example**
@@ -114,6 +115,8 @@ NAVER_CLIENT_ID=
 NAVER_CLIENT_SECRET=
 WEATHER_API_KEY=
 CLIENT_URL=
+VAPID_PUBLIC_KEY=
+VAPID_PRIVATE_KEY=
 ```
 
 - [x] 키 이름 확정
@@ -134,6 +137,7 @@ CLIENT_URL=
 | `dangerous_foods` | 전체 공개 읽기, 수정 불가 |
 | `guide_content` | 전체 공개 읽기, 수정 불가 |
 | `training_guides` | 전체 공개 읽기, 수정 불가 |
+| `push_subscriptions` | 본인 데이터만 CRUD 가능 |
 
 - [x] RLS 정책 검토 및 확정
 
@@ -206,3 +210,11 @@ CLIENT_URL=
 - [x] `pets` 테이블 사진 컬럼 추가 여부 결정 → 미추가 확정 (핵심 기능 아님, 추후 필요 시 추가)
 - [x] `health_logs.diagnosis` 의미 확정 → AI 분석 결과 저장 확정 (Gemini 응답 텍스트, 수의사 진단은 앱 범위 밖)
 - [x] research.md 미결정 사항 섹션 업데이트 (AI·날씨 API·프레임워크 확정 반영, DB 설계 세부사항 반영)
+
+---
+
+### 13. 추가 확정 필요 (3차)
+
+- [ ] 홈 대시보드(`/`) 표시 내용 정의 (어떤 정보를 보여줄지)
+- [x] ③ 증상 건강 체크 로직 확정 → Gemini만 사용 확정 (증상 체크박스 선택 → Gemini 전달 → AI 분석 결과 → health_logs.diagnosis 저장. DB 매핑 테이블 없음)
+- [x] `push_subscriptions` 테이블 RLS 정책 추가 → 본인 구독 정보만 CRUD 확정
