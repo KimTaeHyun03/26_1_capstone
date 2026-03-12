@@ -517,13 +517,76 @@ VAPID_PRIVATE_KEY=
 
 ```
 D:/ysu_26_1/capstone/pet_management/
-├── plan.md        # 과제 계획서 (기능 목록, 참여자, 성과물 유형)
-├── dev-plan.md    # 개발 구현 계획 (기술 스택, DB 설계, 일정)
-├── research.md    # 본 파일
-└── .git/          # Git 저장소 초기화 완료 (main 브랜치, origin 원격 연결됨)
+├── client/                             # React 프론트엔드
+│   ├── public/
+│   │   └── sw.js                       # Service Worker (Web Push, 미구현)
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── layout/                 # AppLayout, Header, BottomNav
+│   │   │   └── PrivateRoute.tsx        ✅
+│   │   ├── lib/
+│   │   │   ├── axios.ts                ✅ baseURL, 토큰 인터셉터, 401 리다이렉트
+│   │   │   ├── supabase.ts             ✅ anon key 클라이언트
+│   │   │   ├── naver.ts                ⬜ (7~8주차)
+│   │   │   └── weather.ts              ⬜ (5~6주차)
+│   │   ├── pages/
+│   │   │   ├── auth/
+│   │   │   │   ├── Login.tsx           ✅
+│   │   │   │   └── Register.tsx        ✅
+│   │   │   ├── Guide.tsx               ✅
+│   │   │   ├── Food.tsx                ✅
+│   │   │   ├── Health.tsx              ✅ Gemini 연동
+│   │   │   ├── Training.tsx            ⬜ (3~4주차)
+│   │   │   ├── Feeding.tsx             ⬜ (5~6주차)
+│   │   │   ├── Walk.tsx                ⬜ (5~6주차)
+│   │   │   ├── Map.tsx                 ⬜ (7~8주차)
+│   │   │   ├── AiDiagnosis.tsx         ⬜ (9~10주차)
+│   │   │   ├── Home.tsx                ⬜
+│   │   │   └── Pets.tsx                ⬜
+│   │   ├── store/
+│   │   │   ├── authSlice.ts            ✅
+│   │   │   ├── petSlice.ts             ✅
+│   │   │   └── index.ts                ✅
+│   │   ├── App.tsx                     ✅
+│   │   └── main.tsx                    ✅
+│   ├── .env.development                # git 제외
+│   ├── .env.example                    ✅
+│   └── package.json
+├── server/                             # Node.js 백엔드
+│   ├── src/
+│   │   ├── controllers/
+│   │   │   ├── auth.ts                 ✅
+│   │   │   ├── pets.ts                 ✅
+│   │   │   ├── guide.ts                ✅
+│   │   │   ├── foods.ts                ✅
+│   │   │   └── health.ts               ✅ Gemini 연동
+│   │   ├── routes/
+│   │   │   ├── auth.ts                 ✅
+│   │   │   ├── pets.ts                 ✅
+│   │   │   ├── guide.ts                ✅
+│   │   │   ├── foods.ts                ✅
+│   │   │   └── health.ts               ✅
+│   │   ├── middleware/
+│   │   │   └── auth.ts                 ✅ JWT 인증 미들웨어
+│   │   ├── lib/
+│   │   │   ├── supabase.ts             ✅ service_role 클라이언트
+│   │   │   └── weather.ts              ⬜ (5~6주차)
+│   │   └── index.ts                    ✅
+│   ├── .env                            # git 제외
+│   ├── .env.example                    ✅
+│   └── package.json
+├── data/
+│   ├── guide_content.sql               ✅ 강아지·고양이 각 5카테고리
+│   └── dangerous_foods.sql             ✅ ASPCA 자료 기반 23개
+├── supabase_schema.sql                 ✅ 8개 테이블 + RLS + 트리거
+├── progress.md                         ✅ 작업 진행 현황
+├── todo.md                             ✅ 완료/미완료 체크리스트
+├── git_branch.md                       ✅ 브랜치 전략 및 현황
+├── CLAUDE.md                           ✅ AI 작업 지침
+├── plan.md                             # 과제 계획서
+├── dev-plan.md                         # 개발 구현 계획
+└── research.md                         # 본 파일
 ```
-
-실제 앱 코드는 아직 없음. 계획 단계.
 
 ---
 

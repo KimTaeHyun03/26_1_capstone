@@ -17,6 +17,9 @@ node_modules/
 dist/
 build/
 
+# 로그
+*.log
+
 # OS
 .DS_Store
 Thumbs.db
