@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useMutation } from '@tanstack/react-query'
 import api from '../lib/axios'
 
 interface FoodItem {
@@ -26,6 +26,7 @@ export default function Food() {
   const [query, setQuery] = useState('')
   const [search, setSearch] = useState('')
   const [species, setSpecies] = useState<'all' | 'dog' | 'cat'>('all')
+  const [aiAnswer, setAiAnswer] = useState<string | null>(null)
 
   const { data: results = [], isLoading } = useQuery<FoodItem[]>({
     queryKey: ['foods', search, species],
@@ -39,8 +40,20 @@ export default function Food() {
     enabled: !!search,
   })
 
+  const aiMutation = useMutation({
+    mutationFn: async () => {
+      const res = await api.post('/api/foods/chat', {
+        food: search,
+        species: species === 'all' ? undefined : species,
+      })
+      return res.data.answer as string
+    },
+    onSuccess: (data) => setAiAnswer(data),
+  })
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
+    setAiAnswer(null)
     setSearch(query.trim())
   }
 
@@ -82,7 +95,31 @@ export default function Food() {
       {isLoading && <p className="text-center text-gray-400 py-10">검색 중...</p>}
 
       {!isLoading && search && results.length === 0 && (
-        <p className="text-center text-gray-400 py-10">검색 결과가 없습니다</p>
+        <div className="text-center py-8">
+          <p className="text-gray-400 mb-4">DB에 등록되지 않은 음식입니다</p>
+          {!aiAnswer && (
+            <button
+              onClick={() => aiMutation.mutate()}
+              disabled={aiMutation.isPending}
+              className="bg-blue-500 text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-blue-600 disabled:opacity-50"
+            >
+              {aiMutation.isPending ? 'AI 분석 중...' : '🤖 AI에게 물어보기'}
+            </button>
+          )}
+          {aiMutation.isError && (
+            <p className="text-red-400 text-sm mt-2">AI 문의 중 오류가 발생했습니다</p>
+          )}
+          {aiAnswer && (
+            <div className="text-left bg-white rounded-xl border border-gray-100 shadow-sm p-4 mt-4">
+              <div className="flex items-center gap-2 mb-3">
+                <span className="text-lg">🤖</span>
+                <h3 className="font-medium">AI 답변</h3>
+              </div>
+              <p className="text-sm text-gray-700 whitespace-pre-line">{aiAnswer}</p>
+              <p className="text-xs text-gray-400 mt-3">※ 본 답변은 참고용이며, 정확한 정보는 수의사에게 문의하세요.</p>
+            </div>
+          )}
+        </div>
       )}
 
       <div className="space-y-3">
