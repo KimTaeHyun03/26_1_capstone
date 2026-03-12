@@ -70,8 +70,9 @@
   - [x] `/api/guide` 서버 라우터·컨트롤러
 - [ ] ③ `Health.tsx` — 증상 기반 건강 체크 (체크박스 → Gemini 분석 → 결과 저장)
   - [ ] `/api/health` 서버 라우터·컨트롤러
-- [ ] ⑤ `Food.tsx` — 위험 음식 검색 (pg_trgm 전문 검색)
+- [ ] ⑤ `Food.tsx` — 위험 음식 검색 (pg_trgm 전문 검색) + DB 없는 음식 AI 채팅 문의
   - [ ] `/api/foods/search` 서버 라우터·컨트롤러
+  - [ ] `/api/foods/chat` 서버 라우터·컨트롤러 (Gemini — 음식 안전성 문의)
 - [ ] ⑦ `Training.tsx` — 훈련 가이드 (기초~행동 교정 단계별)
   - [ ] `/api/training` 서버 라우터·컨트롤러
 

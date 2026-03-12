@@ -26,7 +26,7 @@
 | # | 기능 | 설명 |
 |---|------|------|
 | ① | 초보 보호자 가이드 | 종류별 사육 방법, 준비물, 주의사항 단계별 안내 |
-| ⑤ | 위험 음식 검색 | 유해 식품 검색, 위험도·증상 정보 제공 |
+| ⑤ | 위험 음식 검색 | 유해 식품 검색, 위험도·증상 정보 제공. DB에 없는 음식은 Gemini AI 채팅으로 문의 가능 |
 | ⑦ | 훈련 가이드 | 기초 훈련~행동 교정 단계별 방법 제공 |
 
 ### 2-2. 외부 API 연동 기능
@@ -358,7 +358,9 @@ users (1) ──< pets (N) ──< feeding_schedules (N)
 - `training_guides.steps`를 JSON 컬럼으로 설계 → 훈련 단계가 가변적이므로 JSON이 적합
 - `dangerous_foods`, `guide_content`, `training_guides`는 정적 콘텐츠 테이블로, SQL 파일로 직접 작성 후 Supabase에 import
   - `dangerous_foods`: ASPCA 자료 기반 직접 입력 (data_sources.md 참고)
+    - `data_sourse.md` 파일에 저장되어있음
   - `guide_content`: Gemini로 초안 생성 후 검토·수정
+    - claude로 초안 생성, 검토, 수정함
   - `training_guides`: Gemini로 초안 생성 후 검토·수정
 - `users` 테이블은 `public.users`를 별도 생성 → 닉네임, 프로필 사진 등 커스텀 컬럼 저장 가능. 회원가입 시 서버에서 `auth.users`와 `public.users` 동시 생성
 
@@ -418,6 +420,7 @@ users (1) ──< pets (N) ──< feeding_schedules (N)
 | GET | `/api/health/:petId` | 건강 기록 조회 |
 | POST | `/api/health` | 건강 체크 기록 저장 |
 | GET | `/api/foods/search?q=` | 위험 음식 검색 |
+| POST | `/api/foods/chat` | DB에 없는 음식 AI 안전성 문의 (Gemini) |
 | GET | `/api/guide?species=` | 보호자 가이드 조회 |
 | GET | `/api/training?species=` | 훈련 가이드 조회 |
 | GET | `/api/map/hospitals?lat=&lng=` | 주변 동물병원 검색 |

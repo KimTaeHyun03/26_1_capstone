@@ -5,6 +5,7 @@ import dotenv from 'dotenv'
 import authRouter from './routes/auth'
 import petsRouter from './routes/pets'
 import guideRouter from './routes/guide'
+import foodsRouter from './routes/foods'
 
 dotenv.config()
 
@@ -25,9 +26,9 @@ app.get('/health', (_req, res) => {
 app.use('/api/auth', authRouter)
 app.use('/api/pets', petsRouter)
 app.use('/api/guide', guideRouter)
+app.use('/api/foods', foodsRouter)
 // app.use('/api/feeding', feedingRouter)
 // app.use('/api/health', healthRouter)
-// app.use('/api/foods', foodsRouter)
 // app.use('/api/training', trainingRouter)
 // app.use('/api/map', mapRouter)
 // app.use('/api/walk', walkRouter)
