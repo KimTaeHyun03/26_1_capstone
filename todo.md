@@ -72,7 +72,7 @@
   - [x] `/api/health` 서버 라우터·컨트롤러
 - [x] ⑤ `Food.tsx` — 위험 음식 검색 (pg_trgm 전문 검색) + DB 없는 음식 AI 채팅 문의
   - [x] `/api/foods/search` 서버 라우터·컨트롤러
-  - [ ] `/api/foods/chat` 서버 라우터·컨트롤러 (Gemini — 음식 안전성 문의)
+  - [x] `/api/foods/chat` 서버 라우터·컨트롤러 (Gemini — 음식 안전성 문의)
 - [ ] ⑦ `Training.tsx` — 훈련 가이드 (기초~행동 교정 단계별)
   - [ ] `/api/training` 서버 라우터·컨트롤러
 
