@@ -12,7 +12,8 @@ develop                 ← 개발 통합
 ├── feature/server-core    ← 백엔드 코어 (인증·반려동물 CRUD)
 ├── feature/frontend-core  ← 프론트엔드 코어 (Redux, axios, 로그인·회원가입)
 ├── feature/pets           ← 반려동물 등록·관리
-├── feature/guide       ← ① 초보 보호자 가이드
+├── feature/guide          ← ① 초보 보호자 가이드
+├── feature/food           ← ⑤ 위험 음식 검색
 ├── feature/feeding     ← ② 급식 알림·계산기
 ├── feature/health      ← ③ 증상 건강 체크
 ├── feature/map         ← ④ 동물병원·보호소 지도
