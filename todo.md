@@ -52,12 +52,12 @@
 
 ## 3단계 — 프론트엔드 코어
 
-- [ ] `client/src/lib/supabase.ts` — Supabase 클라이언트 초기화
-- [ ] Redux store 설정 (auth slice, pet slice)
-- [ ] axios 인스턴스 설정 (baseURL, 인터셉터)
-- [ ] `Login.tsx` 구현
-- [ ] `Register.tsx` 구현
-- [ ] `PrivateRoute` 컴포넌트 추가 (인증 필요 페이지 보호)
+- [x] `client/src/lib/supabase.ts` — Supabase 클라이언트 초기화
+- [x] Redux store 설정 (auth slice, pet slice)
+- [x] axios 인스턴스 설정 (baseURL, 인터셉터)
+- [x] `Login.tsx` 구현
+- [x] `Register.tsx` 구현
+- [x] `PrivateRoute` 컴포넌트 추가 (인증 필요 페이지 보호)
 
 ---
 
