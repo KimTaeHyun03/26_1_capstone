@@ -56,7 +56,10 @@ export async function logout(req: Request, res: Response) {
   const token = authHeader?.split(' ')[1]
 
   if (token) {
-    await supabase.auth.admin.signOut(token)
+    const { data } = await supabase.auth.getUser(token)
+    if (data.user) {
+      await supabase.auth.admin.signOut(data.user.id)
+    }
   }
 
   res.json({ message: '로그아웃 완료' })

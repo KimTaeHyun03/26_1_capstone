@@ -145,3 +145,22 @@ CREATE POLICY "training_select_all" ON public.training_guides FOR SELECT USING (
 CREATE POLICY "push_select_own" ON public.push_subscriptions FOR SELECT USING (auth.uid() = user_id);
 CREATE POLICY "push_insert_own" ON public.push_subscriptions FOR INSERT WITH CHECK (auth.uid() = user_id);
 CREATE POLICY "push_delete_own" ON public.push_subscriptions FOR DELETE USING (auth.uid() = user_id);
+
+-- =============================================
+-- updated_at 자동 갱신 트리거
+-- =============================================
+CREATE OR REPLACE FUNCTION public.update_updated_at()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.updated_at = NOW();
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER update_users_updated_at
+  BEFORE UPDATE ON public.users
+  FOR EACH ROW EXECUTE FUNCTION public.update_updated_at();
+
+CREATE TRIGGER update_pets_updated_at
+  BEFORE UPDATE ON public.pets
+  FOR EACH ROW EXECUTE FUNCTION public.update_updated_at();
