@@ -43,6 +43,7 @@
 
 ## 2단계 — 백엔드 코어
 
+- [x] `server/src/lib/supabase.ts` — Supabase 클라이언트 초기화 (service_role)
 - [x] `server/src/middleware/auth.ts` — JWT 토큰 검증 미들웨어
 - [x] 인증 라우터·컨트롤러 (`/api/auth/register`, `/api/auth/login`, `/api/auth/logout`)
 - [x] pets CRUD 라우터·컨트롤러 (`/api/pets`)
