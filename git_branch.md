@@ -9,7 +9,7 @@
 ```
 main                    ← 배포용 (항상 안정)
 develop                 ← 개발 통합
-├── feature/auth        ← 로그인·회원가입
+├── feature/server-core ← 백엔드 코어 (인증·반려동물 CRUD)
 ├── feature/pets        ← 반려동물 등록·관리
 ├── feature/guide       ← ① 초보 보호자 가이드
 ├── feature/feeding     ← ② 급식 알림·계산기

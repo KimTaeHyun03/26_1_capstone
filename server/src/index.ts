@@ -2,6 +2,8 @@ import express from 'express'
 import cors from 'cors'
 import helmet from 'helmet'
 import dotenv from 'dotenv'
+import authRouter from './routes/auth'
+import petsRouter from './routes/pets'
 
 dotenv.config()
 
@@ -18,9 +20,9 @@ app.get('/health', (_req, res) => {
   res.json({ status: 'ok' })
 })
 
-// TODO: 라우터 연결
-// app.use('/api/auth', authRouter)
-// app.use('/api/pets', petsRouter)
+// 라우터
+app.use('/api/auth', authRouter)
+app.use('/api/pets', petsRouter)
 // app.use('/api/feeding', feedingRouter)
 // app.use('/api/health', healthRouter)
 // app.use('/api/foods', foodsRouter)
