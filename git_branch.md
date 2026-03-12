@@ -18,7 +18,7 @@ develop                 ← 개발 통합
 ├── feature/health      ← ③ 증상 건강 체크
 ├── feature/map         ← ④ 동물병원·보호소 지도
 ├── feature/walk        ← ⑥ 산책 가능 여부
-├── feature/training    ← ⑦ 훈련 가이드
+├── feature/training    ← ⑦ 훈련 가이드 (**작업 중**)
 ├── feature/ai          ← ⑧ AI 병명 예측
 └── hotfix/버그명       ← 긴급 버그 수정
 ```

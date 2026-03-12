@@ -7,6 +7,7 @@ import petsRouter from './routes/pets'
 import guideRouter from './routes/guide'
 import foodsRouter from './routes/foods'
 import healthRouter from './routes/health'
+import trainingRouter from './routes/training'
 
 dotenv.config()
 
@@ -30,7 +31,7 @@ app.use('/api/guide', guideRouter)
 app.use('/api/foods', foodsRouter)
 app.use('/api/health', healthRouter)
 // app.use('/api/feeding', feedingRouter)
-// app.use('/api/training', trainingRouter)
+app.use('/api/training', trainingRouter)
 // app.use('/api/map', mapRouter)
 // app.use('/api/walk', walkRouter)
 // app.use('/api/ai', aiRouter)

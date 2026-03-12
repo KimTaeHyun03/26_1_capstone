@@ -73,8 +73,8 @@
 - [x] ⑤ `Food.tsx` — 위험 음식 검색 (pg_trgm 전문 검색) + DB 없는 음식 AI 채팅 문의
   - [x] `/api/foods/search` 서버 라우터·컨트롤러
   - [x] `/api/foods/chat` 서버 라우터·컨트롤러 (Gemini — 음식 안전성 문의)
-- [ ] ⑦ `Training.tsx` — 훈련 가이드 (기초~행동 교정 단계별)
-  - [ ] `/api/training` 서버 라우터·컨트롤러
+- [x] ⑦ `Training.tsx` — 훈련 가이드 (기초~행동 교정 단계별)
+  - [x] `/api/training` 서버 라우터·컨트롤러
 
 ### 5~6주차 — 외부 API (알림·날씨)
 
@@ -97,7 +97,16 @@
 
 - [ ] ⑧ `AiDiagnosis.tsx` — AI 병명 예측·병원 추천 (Gemini API)
   - [ ] `/api/ai/diagnosis` 서버 라우터·컨트롤러
-  - [ ] Gemini 수의학 프롬프트 설계·튜닝
+  - [ ] Gemini 수의학 프롬프트 설계
+
+### AI 튜닝 (전체 AI 기능 구현 완료 후)
+
+> Gemini 연동 기능 전부 구현 완료 후 일괄 튜닝 진행
+> 대상: ③ Health, ⑤ foods/chat, ⑧ AiDiagnosis
+
+- [ ] Health 분석 프롬프트 튜닝
+- [ ] foods/chat 프롬프트 튜닝
+- [ ] AiDiagnosis 수의학 프롬프트 튜닝
 
 ### 11~12주차 — 마무리
 
@@ -110,10 +119,10 @@
 
 ## 5단계 — 정적 콘텐츠 데이터 입력 ⚠️ 일정에서 빠진 작업
 
-- [ ] `dangerous_foods` 데이터 SQL 작성 (ASPCA 자료 기반)
-- [ ] `guide_content` 데이터 SQL 작성 (Gemini 초안 생성 후 검토)
-- [ ] `training_guides` 데이터 SQL 작성 (Gemini 초안 생성 후 검토)
-- [ ] Supabase에 SQL import
+- [x] `dangerous_foods` 데이터 SQL 작성 (ASPCA 자료 기반)
+- [x] `guide_content` 데이터 SQL 작성
+- [x] `training_guides` 데이터 SQL 작성
+- [x] Supabase에 SQL import (dangerous_foods, guide_content, training_guides 완료)
 
 ---
 

@@ -111,6 +111,7 @@ API 키 등 민감 정보는 **절대 프론트엔드(브라우저)에 노출하
   - 무료 티어: 분당 15 req, 일 1,500 req → 캡스톤 수준에서 사실상 무료
   - Claude API 대비 비용 부담 없이 유사한 성능 제공
   - 수의학 프롬프트 설계로 ③⑧ 기능 구현
+  - **개발 방침**: Gemini 연동 기능(③ Health, ⑤ foods/chat, ⑧ AiDiagnosis)을 모두 구현 완료한 후, 일괄적으로 프롬프트 튜닝 진행
 
 ### 3-7. 외부 API
 | API | 용도 | 비고 |
@@ -357,8 +358,7 @@ users (1) ──< pets (N) ──< feeding_schedules (N)
 **주목할 설계:**
 - `training_guides.steps`를 JSON 컬럼으로 설계 → 훈련 단계가 가변적이므로 JSON이 적합
 - `dangerous_foods`, `guide_content`, `training_guides`는 정적 콘텐츠 테이블로, SQL 파일로 직접 작성 후 Supabase에 import
-  - `dangerous_foods`: ASPCA 자료 기반 직접 입력 (data_sources.md 참고)
-    - `data_sourse.md` 파일에 저장되어있음
+  - `dangerous_foods`: ASPCA 자료 기반 직접 입력 (data/data_sources.md 참고)
   - `guide_content`: Gemini로 초안 생성 후 검토·수정
     - claude로 초안 생성, 검토, 수정함
   - `training_guides`: Gemini로 초안 생성 후 검토·수정

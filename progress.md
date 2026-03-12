@@ -1,7 +1,7 @@
 # 작업 진행 현황 요약
 
 > 기준일: 2026-03-12
-> 브랜치: feature/health (현재 작업 중)
+> 브랜치: feature/training (현재 작업 중)
 
 ---
 
@@ -26,7 +26,7 @@
 | JWT 인증 미들웨어 | ✅ | `server/src/middleware/auth.ts` |
 | 회원가입 API | ✅ | `POST /api/auth/register` |
 | 로그인 API | ✅ | `POST /api/auth/login` |
-| 로그아웃 API | ✅ | `POST /api/auth/logout` (버그 수정 완료) |
+| 로그아웃 API | ✅ | `POST /api/auth/logout` |
 | 반려동물 CRUD API | ✅ | `GET/POST/PUT/DELETE /api/pets` |
 
 ### 3단계 — 프론트엔드 코어
@@ -40,30 +40,31 @@
 | 로그인 페이지 | ✅ | React Hook Form + Zod 유효성 검사 |
 | 회원가입 페이지 | ✅ | React Hook Form + Zod 유효성 검사 |
 
-### 4단계 — 기능 페이지 (3~4주차)
+### 4단계 — 기능 페이지
 | 기능 | 백엔드 | 프론트 | 데이터 | 비고 |
 |------|--------|--------|--------|------|
 | ① 초보 보호자 가이드 | ✅ `/api/guide` | ✅ `Guide.tsx` | ✅ | 강아지·고양이 각 5카테고리 |
+| ③ 증상 기반 건강 체크 | ✅ `/api/health` | ✅ `Health.tsx` | - | Gemini 2.5 Flash 연동 |
 | ⑤ 위험 음식 검색 | ✅ `/api/foods/search` | ✅ `Food.tsx` | ✅ | ASPCA 자료 기반 23개 항목 |
-| ③ 증상 기반 건강 체크 | ✅ `/api/health` | ✅ `Health.tsx` | - | Gemini 연동, 429 오류 확인 중 |
+| ⑤ 음식 AI 채팅 | ✅ `/api/foods/chat` | ✅ `Food.tsx` | - | Gemini 2.5 Flash 연동 |
+| ⑦ 훈련 가이드 | ✅ `/api/training` | ✅ `Training.tsx` | ✅ | 강아지 전용, 13개 항목 |
+
+### 5단계 — 정적 콘텐츠 데이터
+| 항목 | 상태 | 비고 |
+|------|------|------|
+| dangerous_foods.sql | ✅ | ASPCA 자료 기반 23개 |
+| guide_content.sql | ✅ | 강아지·고양이 각 5카테고리 |
+| training_guides.sql | ✅ | basic 5개, behavior 5개, trick 3개 |
 
 ---
 
 ## 현재 이슈
 
-| 이슈 | 원인 | 상태 |
-|------|------|------|
-| Health Gemini 429 오류 | Gemini 무료 티어 분당 요청 제한 초과 | 일시적, 잠시 후 재시도 시 해결 |
+없음
 
 ---
 
 ## 미완료 작업
-
-### 4단계 — 기능 페이지 (3~4주차)
-- [ ] ⑦ `Training.tsx` — 훈련 가이드
-  - [ ] training_guides 데이터 입력
-  - [ ] `/api/training` 백엔드
-  - [ ] `Training.tsx` 프론트
 
 ### 4단계 — 기능 페이지 (5~6주차)
 - [ ] ② `Feeding.tsx` — 급식 알림·급여량 계산기
@@ -85,9 +86,8 @@
   - [ ] `/api/ai/diagnosis` 백엔드
   - [ ] Gemini 수의학 프롬프트 설계
 
-### 5단계 — 정적 콘텐츠 데이터
-- [ ] `training_guides` 데이터 SQL 작성
-- [ ] `/api/foods/chat` AI 음식 안전성 채팅 (Gemini)
+### AI 튜닝 (전체 AI 기능 구현 완료 후)
+- [ ] Health, foods/chat, AiDiagnosis 프롬프트 일괄 튜닝
 
 ### 마무리
 - [ ] UI/UX 개선, 반응형 마무리
@@ -102,12 +102,13 @@
 | 브랜치 | 상태 | 내용 |
 |--------|------|------|
 | `main` | 유지 | 배포용 |
-| `develop` | 최신화 | 개발 통합 (`feature/food`까지 머지됨) |
+| `develop` | 최신화 | `feature/food` AI 채팅까지 머지됨 |
 | `feature/server-core` | 머지 완료 | 백엔드 코어 |
 | `feature/frontend-core` | 머지 완료 | 프론트엔드 코어 |
 | `feature/guide` | 머지 완료 | 초보 보호자 가이드 |
-| `feature/food` | 머지 완료 | 위험 음식 검색 |
-| `feature/health` | **작업 중** | 증상 건강 체크 (Gemini 연동) |
+| `feature/food` | 머지 완료 | 위험 음식 검색 + AI 채팅 |
+| `feature/health` | 머지 완료 | 증상 건강 체크 (Gemini 2.5 Flash) |
+| `feature/training` | **작업 중** | 훈련 가이드 |
 
 ---
 
@@ -129,8 +130,8 @@ pet_management/
 │   │   ├── auth/Register.tsx ✅
 │   │   ├── Guide.tsx        ✅
 │   │   ├── Food.tsx         ✅
-│   │   ├── Health.tsx       ✅ (Gemini 429 확인 중)
-│   │   ├── Training.tsx     ⬜
+│   │   ├── Health.tsx       ✅
+│   │   ├── Training.tsx     ✅ 강아지 전용
 │   │   ├── Feeding.tsx      ⬜
 │   │   ├── Walk.tsx         ⬜
 │   │   ├── Map.tsx          ⬜
@@ -147,20 +148,24 @@ pet_management/
 │   │   ├── pets.ts          ✅
 │   │   ├── guide.ts         ✅
 │   │   ├── foods.ts         ✅
-│   │   └── health.ts        ✅
+│   │   ├── health.ts        ✅
+│   │   └── training.ts      ✅
 │   ├── routes/
 │   │   ├── auth.ts          ✅
 │   │   ├── pets.ts          ✅
 │   │   ├── guide.ts         ✅
 │   │   ├── foods.ts         ✅
-│   │   └── health.ts        ✅
+│   │   ├── health.ts        ✅
+│   │   └── training.ts      ✅
 │   ├── middleware/auth.ts   ✅
 │   ├── lib/
 │   │   ├── supabase.ts      ✅
 │   │   └── weather.ts       ⬜
 │   └── index.ts             ✅
 ├── data/
+│   ├── data_sources.md      ✅
 │   ├── guide_content.sql    ✅
-│   └── dangerous_foods.sql  ✅
+│   ├── dangerous_foods.sql  ✅
+│   └── training_guides.sql  ✅
 └── supabase_schema.sql      ✅
 ```
