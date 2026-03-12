@@ -43,10 +43,10 @@
 
 ## 2단계 — 백엔드 코어
 
-- [ ] `server/src/middleware/auth.ts` — JWT 토큰 검증 미들웨어
-- [ ] 인증 라우터·컨트롤러 (`/api/auth/register`, `/api/auth/login`, `/api/auth/logout`)
-- [ ] pets CRUD 라우터·컨트롤러 (`/api/pets`)
-- [ ] `server/src/index.ts` 라우터 연결 (TODO 주석 활성화)
+- [x] `server/src/middleware/auth.ts` — JWT 토큰 검증 미들웨어
+- [x] 인증 라우터·컨트롤러 (`/api/auth/register`, `/api/auth/login`, `/api/auth/logout`)
+- [x] pets CRUD 라우터·컨트롤러 (`/api/pets`)
+- [x] `server/src/index.ts` 라우터 연결 (TODO 주석 활성화)
 
 ---
 
