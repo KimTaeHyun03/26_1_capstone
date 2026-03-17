@@ -486,10 +486,10 @@ VAPID_PRIVATE_KEY=
 |------|------|------|------|
 | [X] | 1주 | 프로젝트 셋업 (React+TS, Node.js, Supabase, Cloudtype) | 인프라 |
 | [X] | 2주 | 인증(로그인·회원가입), 반려동물 등록 | 기반 기능 |
-| [X] | 3~4주 | ①③⑤⑦ 콘텐츠 기반 기능 | DB 중심 |
-| [X] | 5~6주 | ②⑥ 급식 알림·산책 판단 | 외부 API |
-| [X] | 7~8주 | ④ 네이버 지도 기반 병원·보호소 찾기 | 외부 API |
-| [X] | 9~10주 | ⑧ AI 기능 (Gemini API 프롬프트 설계) | AI |
+| [X] | 3~4주 | 초보 보호자 가이드·증상 기반 건강 체크·위험 음식 검색·훈련 가이드 콘텐츠 기반 기능 | DB 중심 |
+| [X] | 5~6주 | 급식 알림·급여량 계산기·산책 가능 여부 판단 | 외부 API |
+| [O] | 7~8주 | 동물병원·보호소 찾기 (네이버 지도 기반) | 외부 API |
+| [X] | 9~10주 | AI 병명 예측·병원 추천 (Gemini API 프롬프트 설계) | AI |
 | [X] | 11주 | UI/UX 개선, 반응형 마무리 | 품질 |
 | [X] | 12주 | 테스트, 버그 수정, 발표 준비 | 마무리 |
 
@@ -527,7 +527,7 @@ D:/ysu_26_1/capstone/pet_management/
 │   │   ├── lib/
 │   │   │   ├── axios.ts                ✅ baseURL, 토큰 인터셉터, 401 리다이렉트
 │   │   │   ├── supabase.ts             ✅ anon key 클라이언트
-│   │   │   ├── naver.ts                ⬜ (7~8주차)
+│   │   │   ├── naver.ts                ✅ 지도 SDK 로더, KATEC→WGS84 변환, 마커 생성
 │   │   │   └── weather.ts              ⬜ (5~6주차)
 │   │   ├── pages/
 │   │   │   ├── auth/
@@ -539,7 +539,7 @@ D:/ysu_26_1/capstone/pet_management/
 │   │   │   ├── Training.tsx            ⬜ (3~4주차)
 │   │   │   ├── Feeding.tsx             ⬜ (5~6주차)
 │   │   │   ├── Walk.tsx                ⬜ (5~6주차)
-│   │   │   ├── Map.tsx                 ⬜ (7~8주차)
+│   │   │   ├── Map.tsx                 ✅ 네이버 지도 + 병원·보호소 검색
 │   │   │   ├── AiDiagnosis.tsx         ⬜ (9~10주차)
 │   │   │   ├── Home.tsx                ⬜
 │   │   │   └── Pets.tsx                ⬜
@@ -559,13 +559,15 @@ D:/ysu_26_1/capstone/pet_management/
 │   │   │   ├── pets.ts                 ✅
 │   │   │   ├── guide.ts                ✅
 │   │   │   ├── foods.ts                ✅
-│   │   │   └── health.ts               ✅ Gemini 연동
+│   │   │   ├── health.ts               ✅ Gemini 연동
+│   │   │   └── map.ts                  ✅ 네이버 로컬 검색 (병원·보호소)
 │   │   ├── routes/
 │   │   │   ├── auth.ts                 ✅
 │   │   │   ├── pets.ts                 ✅
 │   │   │   ├── guide.ts                ✅
 │   │   │   ├── foods.ts                ✅
-│   │   │   └── health.ts               ✅
+│   │   │   ├── health.ts               ✅
+│   │   │   └── map.ts                  ✅
 │   │   ├── middleware/
 │   │   │   └── auth.ts                 ✅ JWT 인증 미들웨어
 │   │   ├── lib/
