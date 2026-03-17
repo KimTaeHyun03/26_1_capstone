@@ -8,3 +8,8 @@
   - **shadcn/ui**: Radix UI 기반 컴포넌트 라이브러리
 - 인코딩 : UTF-8 BOM (한글 주석 지원)
 - 참고 우선순위 : research.md파일
+- 대화 시작 시 반드시 `research.md`, `progress.md`, `todo.md` 를 읽고 현재 프로젝트 상태를 파악한 후 작업할 것
+- 주의사항 : git_branch.md를 보고 작업마다 적절한 branch명을 사용하고 작성되어있지 않은 branch명은 md파일에 추가해야함.
+            생성되는 파일명이 research.md 파일트리에 작성되어있지 않으면 추가.
+- 깃허브 커밋 메시지 작성 시 오류가 있었으면 어떤 오류가 있었는지 어떻게 해결했는지 명시할것
+

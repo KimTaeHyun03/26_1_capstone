@@ -89,9 +89,9 @@
 
 ### 7~8주차 — 네이버 지도
 
-- [ ] ④ `Map.tsx` — 동물병원·보호소 찾기 (네이버 지도 + 로컬 검색)
-  - [ ] `/api/map/hospitals`, `/api/map/shelters` 서버 라우터·컨트롤러
-  - [ ] `client/src/lib/naver.ts` — 네이버 지도 API 래퍼
+- [x] ④ `Map.tsx` — 동물병원·보호소 찾기 (네이버 지도 + 로컬 검색)
+  - [x] `/api/map/hospitals`, `/api/map/shelters` 서버 라우터·컨트롤러
+  - [x] `client/src/lib/naver.ts` — 네이버 지도 API 래퍼
 
 ### 9~10주차 — AI 기능
 

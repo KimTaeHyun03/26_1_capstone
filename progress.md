@@ -1,7 +1,7 @@
 # 작업 진행 현황 요약
 
-> 기준일: 2026-03-12
-> 브랜치: feature/training (현재 작업 중)
+> 기준일: 2026-03-17
+> 브랜치: feature/map (현재 작업 중)
 
 ---
 
@@ -45,6 +45,7 @@
 |------|--------|--------|--------|------|
 | ① 초보 보호자 가이드 | ✅ `/api/guide` | ✅ `Guide.tsx` | ✅ | 강아지·고양이 각 5카테고리 |
 | ③ 증상 기반 건강 체크 | ✅ `/api/health` | ✅ `Health.tsx` | - | Gemini 2.5 Flash 연동 |
+| ④ 동물병원·보호소 찾기 | ✅ `/api/map/hospitals`, `/api/map/shelters` | ✅ `Map.tsx` | - | 네이버 로컬 검색 + 지도 연동 |
 | ⑤ 위험 음식 검색 | ✅ `/api/foods/search` | ✅ `Food.tsx` | ✅ | ASPCA 자료 기반 23개 항목 |
 | ⑤ 음식 AI 채팅 | ✅ `/api/foods/chat` | ✅ `Food.tsx` | - | Gemini 2.5 Flash 연동 |
 | ⑦ 훈련 가이드 | ✅ `/api/training` | ✅ `Training.tsx` | ✅ | 강아지 전용, 13개 항목 |
@@ -76,11 +77,6 @@
   - [ ] `server/src/lib/weather.ts` (격자 좌표 변환)
   - [ ] `/api/walk` 백엔드
 
-### 4단계 — 기능 페이지 (7~8주차)
-- [ ] ④ `Map.tsx` — 동물병원·보호소 찾기
-  - [ ] `/api/map/hospitals`, `/api/map/shelters` 백엔드
-  - [ ] `client/src/lib/naver.ts` 프론트
-
 ### 4단계 — 기능 페이지 (9~10주차)
 - [ ] ⑧ `AiDiagnosis.tsx` — AI 병명 예측·병원 추천
   - [ ] `/api/ai/diagnosis` 백엔드
@@ -102,13 +98,14 @@
 | 브랜치 | 상태 | 내용 |
 |--------|------|------|
 | `main` | 유지 | 배포용 |
-| `develop` | 최신화 | `feature/food` AI 채팅까지 머지됨 |
+| `develop` | 최신화 | `feature/training` 머지까지 완료 |
 | `feature/server-core` | 머지 완료 | 백엔드 코어 |
 | `feature/frontend-core` | 머지 완료 | 프론트엔드 코어 |
 | `feature/guide` | 머지 완료 | 초보 보호자 가이드 |
 | `feature/food` | 머지 완료 | 위험 음식 검색 + AI 채팅 |
 | `feature/health` | 머지 완료 | 증상 건강 체크 (Gemini 2.5 Flash) |
-| `feature/training` | **작업 중** | 훈련 가이드 |
+| `feature/training` | 머지 완료 | 훈련 가이드 |
+| `feature/map` | **작업 중** | 동물병원·보호소 찾기 (네이버 지도) |
 
 ---
 
@@ -123,7 +120,7 @@ pet_management/
 │   ├── lib/
 │   │   ├── axios.ts         ✅
 │   │   ├── supabase.ts      ✅
-│   │   ├── naver.ts         ⬜ (7~8주차)
+│   │   ├── naver.ts         ✅ (7~8주차)
 │   │   └── weather.ts       ⬜ (5~6주차)
 │   ├── pages/
 │   │   ├── auth/Login.tsx   ✅
@@ -132,9 +129,9 @@ pet_management/
 │   │   ├── Food.tsx         ✅
 │   │   ├── Health.tsx       ✅
 │   │   ├── Training.tsx     ✅ 강아지 전용
+│   │   ├── Map.tsx          ✅ 네이버 지도 + 검색
 │   │   ├── Feeding.tsx      ⬜
 │   │   ├── Walk.tsx         ⬜
-│   │   ├── Map.tsx          ⬜
 │   │   ├── AiDiagnosis.tsx  ⬜
 │   │   ├── Home.tsx         ⬜
 │   │   └── Pets.tsx         ⬜
@@ -149,14 +146,16 @@ pet_management/
 │   │   ├── guide.ts         ✅
 │   │   ├── foods.ts         ✅
 │   │   ├── health.ts        ✅
-│   │   └── training.ts      ✅
+│   │   ├── training.ts      ✅
+│   │   └── map.ts           ✅
 │   ├── routes/
 │   │   ├── auth.ts          ✅
 │   │   ├── pets.ts          ✅
 │   │   ├── guide.ts         ✅
 │   │   ├── foods.ts         ✅
 │   │   ├── health.ts        ✅
-│   │   └── training.ts      ✅
+│   │   ├── training.ts      ✅
+│   │   └── map.ts           ✅
 │   ├── middleware/auth.ts   ✅
 │   ├── lib/
 │   │   ├── supabase.ts      ✅

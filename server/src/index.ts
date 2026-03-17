@@ -8,6 +8,10 @@ import guideRouter from './routes/guide'
 import foodsRouter from './routes/foods'
 import healthRouter from './routes/health'
 import trainingRouter from './routes/training'
+import mapRouter from './routes/map'
+import feedingRouter from './routes/feeding'
+import pushRouter from './routes/push'
+import { startFeedingCron } from './lib/cron'
 
 dotenv.config()
 
@@ -30,11 +34,14 @@ app.use('/api/pets', petsRouter)
 app.use('/api/guide', guideRouter)
 app.use('/api/foods', foodsRouter)
 app.use('/api/health', healthRouter)
-// app.use('/api/feeding', feedingRouter)
+app.use('/api/feeding', feedingRouter)
 app.use('/api/training', trainingRouter)
-// app.use('/api/map', mapRouter)
+app.use('/api/map', mapRouter)
+app.use('/api/push', pushRouter)
 // app.use('/api/walk', walkRouter)
 // app.use('/api/ai', aiRouter)
+
+startFeedingCron()
 
 app.listen(PORT, () => {
   console.log(`서버 실행 중: http://localhost:${PORT}`)

@@ -1,10 +1,33 @@
-// Service Worker — Web Push 알림 수신
-// TODO: 구현 예정 (5~6주차)
+// Service Worker — Web Push 급식 알림
 
 self.addEventListener('push', (event) => {
-  // 푸시 알림 수신 처리
+  if (!event.data) return
+
+  const data = event.data.json()
+  const title = data.title || '반려동물 급식 알림'
+  const options = {
+    body: data.body || '급식 시간입니다',
+    icon: '/favicon.ico',
+    badge: '/favicon.ico',
+    tag: 'feeding-notification',
+    renotify: true,
+  }
+
+  event.waitUntil(self.registration.showNotification(title, options))
 })
 
 self.addEventListener('notificationclick', (event) => {
-  // 알림 클릭 처리
+  event.notification.close()
+  event.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
+      for (const client of clientList) {
+        if (client.url.includes('/feeding') && 'focus' in client) {
+          return client.focus()
+        }
+      }
+      if (clients.openWindow) {
+        return clients.openWindow('/feeding')
+      }
+    })
+  )
 })
