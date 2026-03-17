@@ -11,6 +11,7 @@ import trainingRouter from './routes/training'
 import mapRouter from './routes/map'
 import feedingRouter from './routes/feeding'
 import pushRouter from './routes/push'
+import walkRouter from './routes/walk'
 import { startFeedingCron } from './lib/cron'
 
 dotenv.config()
