@@ -95,9 +95,11 @@
 
 ### 9~10주차 — AI 기능
 
-- [ ] ⑧ `AiDiagnosis.tsx` — AI 병명 예측·병원 추천 (Gemini API)
+- [ ] ⑧ `AiDiagnosis.tsx` — AI 병명 예측·병원 추천 (Gemini API) ⚠️ code_review.md #10: 현재 라우트 연결됐지만 빈 페이지
   - [ ] `/api/ai/diagnosis` 서버 라우터·컨트롤러
   - [ ] Gemini 수의학 프롬프트 설계
+  - [ ] 증상 입력 UI (텍스트 or 체크박스)
+  - [ ] 분석 결과 표시 (병명 예측 + 병원 방문 권고)
 
 ### AI 튜닝 (전체 AI 기능 구현 완료 후)
 

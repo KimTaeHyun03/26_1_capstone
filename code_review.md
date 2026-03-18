@@ -45,7 +45,7 @@ body('weight').isFloat({ gt: 0 })
 | `client/src/pages/auth/Login.tsx` | localStorage.setItem 제거 |
 | `client/src/pages/auth/Register.tsx` | localStorage 관련 코드 제거 확인 |
 
-### 3. Gemini API Rate Limiting 없음
+### 3. Gemini API Rate Limiting 없음 ~~(제외)~~
 **파일**: `server/src/controllers/foods.ts`, `health.ts`
 
 악의적 사용자가 API를 반복 호출하면 Gemini 무료 할당량(일 1,500 req) 소진 가능.
