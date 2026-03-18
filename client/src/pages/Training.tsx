@@ -49,8 +49,12 @@ export default function Training() {
     <div className="px-4 py-6 max-w-lg mx-auto">
       <h1 className="text-xl font-bold mb-1">훈련 가이드</h1>
       <p className="text-sm text-gray-500 mb-2">단계별 훈련 방법을 확인해보세요</p>
-      <div className="bg-yellow-50 border border-yellow-200 rounded-lg px-3 py-2 mb-4">
-        <p className="text-xs text-yellow-700">🐶 본 훈련 가이드는 강아지 전용입니다. 고양이는 훈련 방식이 달라 별도 가이드가 제공되지 않습니다.</p>
+      <div className="bg-yellow-100 border-l-4 border-yellow-400 rounded-lg px-4 py-3 mb-4 flex items-start gap-2">
+        <span className="text-xl">🐶</span>
+        <div>
+          <p className="text-sm font-semibold text-yellow-800">강아지 전용 콘텐츠</p>
+          <p className="text-xs text-yellow-700 mt-0.5">본 훈련 가이드는 강아지 전용입니다. 고양이는 훈련 방식이 달라 별도 가이드가 제공되지 않습니다.</p>
+        </div>
       </div>
 
       {/* 카테고리 탭 */}
