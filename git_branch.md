@@ -19,13 +19,14 @@ develop                 ← 개발 통합
 ├── feature/map         ← ④ 동물병원·보호소 지도
 ├── feature/walk        ← ⑥ 산책 가능 여부
 ├── feature/training    ← ⑦ 훈련 가이드 (**작업 중**)
-├── feature/ai          ← ⑧ AI 병명 예측
+├── feature/ai          ← ⑧ 반려동물 전용 AI 챗봇 (기존 병명 예측 → 변경)
 ├── feature/home        ← 홈 대시보드 (반려동물 목록)
 ├── fix/neutered-toggle    ← 중성화 토글·종류 선택 버그 수정
 ├── fix/server-validation  ← 서버 측 입력 검증 추가
 ├── fix/token-security     ← 토큰 localStorage → HttpOnly 쿠키 변경
 ├── fix/weather-timeout    ← 기상청 API 타임아웃 설정
 ├── fix/misc-improvements  ← 6~9, 11~14번 항목 일괄 수정
+├── fix/map-user-location  ← 지도 내 위치 마커 미이동 버그 수정
 └── hotfix/버그명          ← 긴급 버그 수정
 ```
 

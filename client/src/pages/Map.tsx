@@ -38,6 +38,7 @@ export default function Map() {
   const mapInstanceRef = useRef<any>(null)
   const markersRef = useRef<any[]>([])
   const infoWindowRef = useRef<any>(null)
+  const userMarkerRef = useRef<any>(null)
 
   // 네이버 지도 초기화
   useEffect(() => {
@@ -63,8 +64,8 @@ export default function Map() {
       zoom: 16,
     })
 
-    // 내 위치 마커
-    new window.naver.maps.Marker({
+    // 내 위치 마커 생성
+    userMarkerRef.current = new window.naver.maps.Marker({
       position: new window.naver.maps.LatLng(userLocation.lat, userLocation.lng),
       map: mapInstanceRef.current,
       icon: {
@@ -77,7 +78,15 @@ export default function Map() {
         anchor: new window.naver.maps.Point(8, 8),
       },
     })
-  }, [mapReady, userLocation])
+  }, [mapReady])
+
+  // 위치 변경 시 내 위치 마커 이동
+  useEffect(() => {
+    if (!mapInstanceRef.current || !userMarkerRef.current) return
+    const newPos = new window.naver.maps.LatLng(userLocation.lat, userLocation.lng)
+    userMarkerRef.current.setPosition(newPos)
+    mapInstanceRef.current.setCenter(newPos)
+  }, [userLocation])
 
   // 마커 전체 제거
   const clearMarkers = () => {
