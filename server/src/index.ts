@@ -17,6 +17,11 @@ import { startFeedingCron } from './lib/cron'
 
 dotenv.config()
 
+const REQUIRED_ENV = ['SUPABASE_URL', 'SUPABASE_SERVICE_KEY', 'GEMINI_API_KEY']
+REQUIRED_ENV.forEach((key) => {
+  if (!process.env[key]) throw new Error(`환경변수 누락: ${key}`)
+})
+
 const app = express()
 const PORT = process.env.PORT || 3000
 

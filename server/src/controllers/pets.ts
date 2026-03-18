@@ -18,6 +18,25 @@ export async function getPets(req: AuthRequest, res: Response) {
   res.json(data)
 }
 
+// 반려동물 단일 조회
+export async function getPet(req: AuthRequest, res: Response) {
+  const { id } = req.params
+
+  const { data, error } = await supabase
+    .from('pets')
+    .select('*')
+    .eq('id', id)
+    .eq('user_id', req.userId!)
+    .single()
+
+  if (error || !data) {
+    res.status(404).json({ error: '반려동물을 찾을 수 없습니다' })
+    return
+  }
+
+  res.json(data)
+}
+
 // 반려동물 등록
 export async function createPet(req: AuthRequest, res: Response) {
   const { name, species, breed, birth_date, weight, neutered } = req.body

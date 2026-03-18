@@ -25,6 +25,7 @@ develop                 ← 개발 통합
 ├── fix/server-validation  ← 서버 측 입력 검증 추가
 ├── fix/token-security     ← 토큰 localStorage → HttpOnly 쿠키 변경
 ├── fix/weather-timeout    ← 기상청 API 타임아웃 설정
+├── fix/misc-improvements  ← 6~9, 11~14번 항목 일괄 수정
 └── hotfix/버그명          ← 긴급 버그 수정
 ```
 
