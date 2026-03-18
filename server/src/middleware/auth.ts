@@ -6,14 +6,12 @@ export interface AuthRequest extends Request {
 }
 
 export async function authMiddleware(req: AuthRequest, res: Response, next: NextFunction) {
-  const authHeader = req.headers.authorization
+  const token = req.cookies?.access_token
 
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+  if (!token) {
     res.status(401).json({ error: '인증 토큰이 없습니다' })
     return
   }
-
-  const token = authHeader.split(' ')[1]
 
   const { data, error } = await supabase.auth.getUser(token)
 

@@ -27,8 +27,9 @@ export default function Login() {
   const onSubmit = async (data: FormData) => {
     try {
       const res = await api.post('/api/auth/login', data)
-      localStorage.setItem('access_token', res.data.access_token)
-      dispatch(setAuth({ userId: res.data.user.id, email: res.data.user.email }))
+      const { id, email } = res.data.user
+      localStorage.setItem('auth_user', JSON.stringify({ userId: id, email }))
+      dispatch(setAuth({ userId: id, email }))
       navigate('/')
     } catch {
       setError('root', { message: '이메일 또는 비밀번호가 올바르지 않습니다' })

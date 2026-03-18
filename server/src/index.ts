@@ -1,6 +1,7 @@
 import express from 'express'
 import cors from 'cors'
 import helmet from 'helmet'
+import cookieParser from 'cookie-parser'
 import dotenv from 'dotenv'
 import authRouter from './routes/auth'
 import petsRouter from './routes/pets'
@@ -21,7 +22,11 @@ const PORT = process.env.PORT || 3000
 
 // 미들웨어
 app.use(helmet({ contentSecurityPolicy: false }))
-app.use(cors({ origin: process.env.CLIENT_URL || 'http://localhost:5173' }))
+app.use(cors({
+  origin: process.env.CLIENT_URL || 'http://localhost:5173',
+  credentials: true,
+}))
+app.use(cookieParser())
 app.use(express.json())
 
 // 헬스체크

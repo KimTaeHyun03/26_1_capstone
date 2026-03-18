@@ -59,8 +59,15 @@ export async function login(req: Request, res: Response) {
     return
   }
 
+  // HttpOnly 쿠키로 토큰 전달 (JS에서 접근 불가 — XSS 방어)
+  res.cookie('access_token', data.session.access_token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    maxAge: 60 * 60 * 24 * 7 * 1000, // 7일
+  })
+
   res.json({
-    access_token: data.session.access_token,
     user: {
       id: data.user.id,
       email: data.user.email,
@@ -80,5 +87,6 @@ export async function logout(req: Request, res: Response) {
     }
   }
 
+  res.clearCookie('access_token')
   res.json({ message: '로그아웃 완료' })
 }
