@@ -11,13 +11,12 @@ export async function subscribe(req: AuthRequest, res: Response) {
     return
   }
 
-  // 이미 동일 endpoint로 구독된 경우 업데이트, 없으면 삽입
+  // 기존 구독 삭제 후 재삽입 (endpoint UNIQUE 제약 없는 환경 대응)
+  await supabase.from('push_subscriptions').delete().eq('endpoint', endpoint)
+
   const { error } = await supabase
     .from('push_subscriptions')
-    .upsert(
-      { user_id: req.userId!, endpoint, p256dh, auth },
-      { onConflict: 'endpoint' }
-    )
+    .insert({ user_id: req.userId!, endpoint, p256dh, auth })
 
   if (error) {
     console.error('[push] 구독 등록 오류:', error)

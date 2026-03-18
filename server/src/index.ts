@@ -39,7 +39,7 @@ app.use('/api/feeding', feedingRouter)
 app.use('/api/training', trainingRouter)
 app.use('/api/map', mapRouter)
 app.use('/api/push', pushRouter)
-// app.use('/api/walk', walkRouter)
+app.use('/api/walk', walkRouter)
 // app.use('/api/ai', aiRouter)
 
 startFeedingCron()
