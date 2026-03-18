@@ -45,11 +45,14 @@ export default function Pets() {
     register,
     handleSubmit,
     reset,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: { species: 'dog', neutered: false },
   })
+
+  const selectedSpecies = watch('species')
 
   // 수정 시 기존 데이터 채우기
   useEffect(() => {
@@ -120,7 +123,7 @@ export default function Pets() {
             {(['dog', 'cat'] as const).map((s) => (
               <label key={s} className="flex-1">
                 <input type="radio" value={s} {...register('species')} className="sr-only" />
-                <div className={`border-2 rounded-xl py-3 text-center cursor-pointer transition-colors`}>
+                <div className={`border-2 rounded-xl py-3 text-center cursor-pointer transition-colors ${selectedSpecies === s ? 'border-amber-400 bg-amber-50' : 'border-gray-200'}`}>
                   <span className="text-2xl">{s === 'dog' ? '🐶' : '🐱'}</span>
                   <p className="text-sm font-medium mt-1">{s === 'dog' ? '강아지' : '고양이'}</p>
                 </div>
