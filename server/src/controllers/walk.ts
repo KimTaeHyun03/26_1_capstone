@@ -72,6 +72,13 @@ export async function getWalkStatus(req: AuthRequest, res: Response) {
     return
   }
 
+  const latNum = parseFloat(lat)
+  const lngNum = parseFloat(lng)
+  if (isNaN(latNum) || isNaN(lngNum)) {
+    res.status(400).json({ error: 'lat, lng는 유효한 숫자여야 합니다' })
+    return
+  }
+
   // 반려동물 정보 조회
   const { data: pet, error: petError } = await supabase
     .from('pets')
@@ -99,7 +106,7 @@ export async function getWalkStatus(req: AuthRequest, res: Response) {
   // 날씨 조회
   let weather
   try {
-    weather = await getCurrentWeather(parseFloat(lat), parseFloat(lng))
+    weather = await getCurrentWeather(latNum, lngNum)
   } catch (err: any) {
     console.error('[walk] 날씨 API 오류:', err?.message)
     res.status(500).json({ error: '날씨 정보를 가져오는 데 실패했습니다' })

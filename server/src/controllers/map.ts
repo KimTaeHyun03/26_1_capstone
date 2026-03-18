@@ -58,9 +58,16 @@ export async function getHospitals(req: Request, res: Response) {
     return
   }
 
+  const latNum = parseFloat(lat as string)
+  const lngNum = parseFloat(lng as string)
+  if (isNaN(latNum) || isNaN(lngNum)) {
+    res.status(400).json({ error: 'lat, lng는 유효한 숫자여야 합니다' })
+    return
+  }
+
   try {
     const keyword = query ? `${query} 동물병원` : '동물병원'
-    const items = await searchLocal(keyword, parseFloat(lat as string), parseFloat(lng as string))
+    const items = await searchLocal(keyword, latNum, lngNum)
     console.log(`[map/hospitals] 검색 완료 - query: ${keyword}, 결과: ${items.length}개`)
     res.json(items)
   } catch (err: any) {
@@ -78,9 +85,16 @@ export async function getShelters(req: Request, res: Response) {
     return
   }
 
+  const latNum = parseFloat(lat as string)
+  const lngNum = parseFloat(lng as string)
+  if (isNaN(latNum) || isNaN(lngNum)) {
+    res.status(400).json({ error: 'lat, lng는 유효한 숫자여야 합니다' })
+    return
+  }
+
   try {
     const keyword = query ? `${query} 동물보호소` : '유기동물 보호소'
-    const items = await searchLocal(keyword, parseFloat(lat as string), parseFloat(lng as string))
+    const items = await searchLocal(keyword, latNum, lngNum)
     console.log(`[map/shelters] 검색 완료 - query: ${keyword}, 결과: ${items.length}개`)
     res.json(items)
   } catch (err: any) {

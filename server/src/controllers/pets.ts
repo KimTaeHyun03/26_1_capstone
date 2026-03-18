@@ -22,6 +22,23 @@ export async function getPets(req: AuthRequest, res: Response) {
 export async function createPet(req: AuthRequest, res: Response) {
   const { name, species, breed, birth_date, weight, neutered } = req.body
 
+  if (!name || name.trim().length === 0) {
+    res.status(400).json({ error: '이름을 입력해주세요' })
+    return
+  }
+  if (!['dog', 'cat'].includes(species)) {
+    res.status(400).json({ error: 'species는 dog 또는 cat이어야 합니다' })
+    return
+  }
+  if (!birth_date || !/^\d{4}-\d{2}-\d{2}$/.test(birth_date)) {
+    res.status(400).json({ error: '생년월일 형식은 YYYY-MM-DD이어야 합니다' })
+    return
+  }
+  if (!weight || weight <= 0) {
+    res.status(400).json({ error: '체중은 0보다 커야 합니다' })
+    return
+  }
+
   const { data, error } = await supabase
     .from('pets')
     .insert({ user_id: req.userId!, name, species, breed, birth_date, weight, neutered })
@@ -40,6 +57,23 @@ export async function createPet(req: AuthRequest, res: Response) {
 export async function updatePet(req: AuthRequest, res: Response) {
   const { id } = req.params
   const { name, species, breed, birth_date, weight, neutered } = req.body
+
+  if (!name || name.trim().length === 0) {
+    res.status(400).json({ error: '이름을 입력해주세요' })
+    return
+  }
+  if (!['dog', 'cat'].includes(species)) {
+    res.status(400).json({ error: 'species는 dog 또는 cat이어야 합니다' })
+    return
+  }
+  if (!birth_date || !/^\d{4}-\d{2}-\d{2}$/.test(birth_date)) {
+    res.status(400).json({ error: '생년월일 형식은 YYYY-MM-DD이어야 합니다' })
+    return
+  }
+  if (!weight || weight <= 0) {
+    res.status(400).json({ error: '체중은 0보다 커야 합니다' })
+    return
+  }
 
   const { data, error } = await supabase
     .from('pets')
