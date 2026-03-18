@@ -23,3 +23,13 @@ build/
 # OS
 .DS_Store
 Thumbs.db
+
+# Vite 캐시
+client/.vite/
+
+# Playwright 테스트 결과
+test-results/
+client/test-results/
+
+# Claude Code
+.claude/
