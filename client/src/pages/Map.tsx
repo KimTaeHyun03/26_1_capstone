@@ -32,7 +32,7 @@ export default function Map() {
   })
   const [mapReady, setMapReady] = useState(false)
   const [searchInput, setSearchInput] = useState('')
-  const [areaName, setAreaName] = useState('')
+  const [areaName, setAreaName] = useState('서울 중구')
 
   const mapRef = useRef<HTMLDivElement>(null)
   const mapInstanceRef = useRef<any>(null)
@@ -45,6 +45,13 @@ export default function Map() {
       .then(() => setMapReady(true))
       .catch((err) => setError(err.message))
   }, [])
+
+  // 초기 로드 시 기본 위치(서울 중구)로 자동 검색
+  useEffect(() => {
+    if (mapReady) {
+      fetchPlaces(userLocation.lat, userLocation.lng, activeTab, '서울 중구')
+    }
+  }, [mapReady])
 
   // 지도 렌더링 (mapReady + userLocation 모두 준비 후)
   useEffect(() => {
