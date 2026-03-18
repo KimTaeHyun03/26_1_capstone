@@ -49,6 +49,11 @@ export async function createFeedingSchedule(req: AuthRequest, res: Response) {
     return
   }
 
+  if (amount <= 0) {
+    res.status(400).json({ error: 'amount는 0보다 커야 합니다' })
+    return
+  }
+
   // 해당 반려동물이 본인 소유인지 확인
   const { data: pet, error: petError } = await supabase
     .from('pets')
@@ -84,6 +89,11 @@ export async function updateFeedingSchedule(req: AuthRequest, res: Response) {
 
   if (time && !/^\d{2}:\d{2}$/.test(time)) {
     res.status(400).json({ error: 'time 형식은 HH:MM이어야 합니다' })
+    return
+  }
+
+  if (amount !== undefined && amount <= 0) {
+    res.status(400).json({ error: 'amount는 0보다 커야 합니다' })
     return
   }
 

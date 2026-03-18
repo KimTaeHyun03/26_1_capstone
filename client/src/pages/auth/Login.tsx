@@ -27,11 +27,21 @@ export default function Login() {
   const onSubmit = async (data: FormData) => {
     try {
       const res = await api.post('/api/auth/login', data)
-      localStorage.setItem('access_token', res.data.access_token)
-      dispatch(setAuth({ userId: res.data.user.id, email: res.data.user.email }))
+      const { id, email } = res.data.user
+      localStorage.setItem('auth_user', JSON.stringify({ userId: id, email }))
+      dispatch(setAuth({ userId: id, email }))
       navigate('/')
-    } catch {
-      setError('root', { message: '이메일 또는 비밀번호가 올바르지 않습니다' })
+    } catch (err: any) {
+      const status = err?.response?.status
+      if (status === 401) {
+        setError('root', { message: '이메일 또는 비밀번호가 올바르지 않습니다' })
+      } else if (status >= 500) {
+        setError('root', { message: '서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요' })
+      } else if (!status) {
+        setError('root', { message: '네트워크 연결을 확인해주세요' })
+      } else {
+        setError('root', { message: '로그인 중 오류가 발생했습니다' })
+      }
     }
   }
 

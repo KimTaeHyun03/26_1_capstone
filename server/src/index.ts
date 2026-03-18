@@ -1,6 +1,7 @@
 import express from 'express'
 import cors from 'cors'
 import helmet from 'helmet'
+import cookieParser from 'cookie-parser'
 import dotenv from 'dotenv'
 import authRouter from './routes/auth'
 import petsRouter from './routes/pets'
@@ -16,12 +17,29 @@ import { startFeedingCron } from './lib/cron'
 
 dotenv.config()
 
+const REQUIRED_ENV = ['SUPABASE_URL', 'SUPABASE_SERVICE_KEY', 'GEMINI_API_KEY']
+REQUIRED_ENV.forEach((key) => {
+  if (!process.env[key]) throw new Error(`환경변수 누락: ${key}`)
+})
+
+const CLIENT_ORIGIN =
+  process.env.NODE_ENV === 'production'
+    ? (() => {
+        if (!process.env.CLIENT_URL) throw new Error('환경변수 누락: CLIENT_URL')
+        return process.env.CLIENT_URL
+      })()
+    : process.env.CLIENT_URL || 'http://localhost:5173'
+
 const app = express()
 const PORT = process.env.PORT || 3000
 
 // 미들웨어
 app.use(helmet({ contentSecurityPolicy: false }))
-app.use(cors({ origin: process.env.CLIENT_URL || 'http://localhost:5173' }))
+app.use(cors({
+  origin: CLIENT_ORIGIN,
+  credentials: true,
+}))
+app.use(cookieParser())
 app.use(express.json())
 
 // 헬스체크

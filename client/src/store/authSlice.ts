@@ -7,12 +7,20 @@ interface AuthState {
   isAuthenticated: boolean
 }
 
-const token = localStorage.getItem('access_token')
+// 토큰은 HttpOnly 쿠키로 관리 — 민감하지 않은 사용자 정보만 localStorage에 저장
+const savedUser = (() => {
+  try {
+    const u = localStorage.getItem('auth_user')
+    return u ? JSON.parse(u) : null
+  } catch {
+    return null
+  }
+})()
 
 const initialState: AuthState = {
-  userId: null,
-  email: null,
-  isAuthenticated: !!token,
+  userId: savedUser?.userId ?? null,
+  email: savedUser?.email ?? null,
+  isAuthenticated: !!savedUser,
 }
 
 const authSlice = createSlice({
@@ -28,7 +36,7 @@ const authSlice = createSlice({
       state.userId = null
       state.email = null
       state.isAuthenticated = false
-      localStorage.removeItem('access_token')
+      localStorage.removeItem('auth_user')
     },
   },
 })

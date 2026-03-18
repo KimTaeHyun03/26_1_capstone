@@ -73,13 +73,14 @@ export async function getCurrentWeather(lat: number, lon: number): Promise<Weath
     numOfRows: 10,
   }
 
-  const response = await axios.get(url, { params })
+  const response = await axios.get(url, { params, timeout: 5000 })
   const items: { category: string; obsrValue: string }[] =
     response.data?.response?.body?.items?.item ?? []
 
   const getValue = (category: string) => {
     const item = items.find((i) => i.category === category)
-    return item ? parseFloat(item.obsrValue) : 0
+    const val = item ? parseFloat(item.obsrValue) : NaN
+    return isNaN(val) ? 0 : val
   }
 
   return {

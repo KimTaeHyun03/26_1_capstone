@@ -139,11 +139,14 @@ export default function Walk() {
       {/* 확인 버튼 */}
       <button
         onClick={handleCheck}
-        disabled={loading || !selectedPetId}
+        disabled={loading || !selectedPetId || pets.find((p) => p.id === selectedPetId)?.species === 'cat'}
         className="w-full bg-amber-500 text-white py-3 rounded-xl font-medium text-sm hover:bg-amber-600 disabled:opacity-50 transition-colors mb-4"
       >
         {loading ? '날씨 정보 확인 중...' : '지금 산책 가능한지 확인'}
       </button>
+      {pets.find((p) => p.id === selectedPetId)?.species === 'cat' && (
+        <p className="text-sm text-gray-500 text-center -mt-2 mb-4">고양이는 산책 기능을 지원하지 않습니다</p>
+      )}
 
       {/* 에러 메시지 */}
       {error && (

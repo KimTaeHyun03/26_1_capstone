@@ -5,6 +5,19 @@ import { supabase } from '../lib/supabase'
 export async function register(req: Request, res: Response) {
   const { email, password, nickname } = req.body
 
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    res.status(400).json({ error: '올바른 이메일 형식을 입력해주세요' })
+    return
+  }
+  if (!password || password.length < 8) {
+    res.status(400).json({ error: '비밀번호는 8자 이상이어야 합니다' })
+    return
+  }
+  if (!nickname || nickname.trim().length === 0) {
+    res.status(400).json({ error: '닉네임을 입력해주세요' })
+    return
+  }
+
   // Supabase Auth 회원가입
   const { data, error } = await supabase.auth.admin.createUser({
     email,
@@ -34,6 +47,11 @@ export async function register(req: Request, res: Response) {
 export async function login(req: Request, res: Response) {
   const { email, password } = req.body
 
+  if (!email || !password) {
+    res.status(400).json({ error: '이메일과 비밀번호를 입력해주세요' })
+    return
+  }
+
   const { data, error } = await supabase.auth.signInWithPassword({ email, password })
 
   if (error) {
@@ -41,8 +59,15 @@ export async function login(req: Request, res: Response) {
     return
   }
 
+  // HttpOnly 쿠키로 토큰 전달 (JS에서 접근 불가 — XSS 방어)
+  res.cookie('access_token', data.session.access_token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    maxAge: 60 * 60 * 24 * 7 * 1000, // 7일
+  })
+
   res.json({
-    access_token: data.session.access_token,
     user: {
       id: data.user.id,
       email: data.user.email,
@@ -62,5 +87,6 @@ export async function logout(req: Request, res: Response) {
     }
   }
 
+  res.clearCookie('access_token')
   res.json({ message: '로그아웃 완료' })
 }

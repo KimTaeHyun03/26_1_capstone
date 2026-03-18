@@ -28,8 +28,12 @@ export async function getHealthLogs(req: AuthRequest, res: Response) {
 export async function analyzeHealth(req: AuthRequest, res: Response) {
   const { petId, symptoms } = req.body
 
-  if (!petId || !symptoms || symptoms.length === 0) {
-    res.status(400).json({ error: '반려동물과 증상을 입력해주세요' })
+  if (!petId) {
+    res.status(400).json({ error: 'petId는 필수입니다' })
+    return
+  }
+  if (!Array.isArray(symptoms) || symptoms.length === 0) {
+    res.status(400).json({ error: '증상을 하나 이상 선택해주세요' })
     return
   }
 

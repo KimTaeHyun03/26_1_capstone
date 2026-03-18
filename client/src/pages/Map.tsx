@@ -93,7 +93,8 @@ export default function Map() {
 
     const bounds = new window.naver.maps.LatLngBounds()
 
-    places.forEach((place) => {
+    const limited = places.slice(0, 30)
+    limited.forEach((place) => {
       const { lat, lng } = katecToLatLng(place.mapx, place.mapy)
       const marker = createMarker(mapInstanceRef.current, lat, lng, place.title, type)
 
@@ -119,7 +120,7 @@ export default function Map() {
       bounds.extend(new window.naver.maps.LatLng(lat, lng))
     })
 
-    if (places.length > 0) {
+    if (limited.length > 0) {
       mapInstanceRef.current.fitBounds(bounds, { top: 50, right: 50, bottom: 50, left: 50 })
     }
   }, [])
@@ -152,7 +153,7 @@ export default function Map() {
         setIsLoading(false)
       }
     },
-    [mapReady, showMarkers]
+    [mapReady, showMarkers, activeTab]
   )
 
   // 좌표 → 지역명 추출 (OpenStreetMap Nominatim, API 키 불필요)

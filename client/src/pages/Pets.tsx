@@ -35,8 +35,8 @@ export default function Pets() {
   const { data: pet } = useQuery<Pet>({
     queryKey: ['pet', petId],
     queryFn: async () => {
-      const res = await api.get('/api/pets')
-      return res.data.find((p: Pet) => p.id === petId)
+      const res = await api.get(`/api/pets/${petId}`)
+      return res.data
     },
     enabled: !!petId && isAuthenticated,
   })
