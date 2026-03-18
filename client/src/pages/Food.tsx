@@ -38,6 +38,7 @@ export default function Food() {
       return res.data
     },
     enabled: !!search,
+    staleTime: 1000 * 60 * 5,
   })
 
   const aiMutation = useMutation({

@@ -152,7 +152,7 @@ export default function Map() {
         setIsLoading(false)
       }
     },
-    [mapReady, showMarkers]
+    [mapReady, showMarkers, activeTab]
   )
 
   // 좌표 → 지역명 추출 (OpenStreetMap Nominatim, API 키 불필요)

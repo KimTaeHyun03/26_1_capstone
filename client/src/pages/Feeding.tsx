@@ -175,12 +175,16 @@ export default function Feeding() {
       return
     }
     const json = sub.toJSON()
-    await api.post('/api/push/subscribe', {
-      endpoint: json.endpoint,
-      p256dh: json.keys?.p256dh,
-      auth: json.keys?.auth,
-    })
-    setNotificationStatus('subscribed')
+    try {
+      await api.post('/api/push/subscribe', {
+        endpoint: json.endpoint,
+        p256dh: json.keys?.p256dh,
+        auth: json.keys?.auth,
+      })
+      setNotificationStatus('subscribed')
+    } catch {
+      setNotificationStatus('error')
+    }
   }
 
   const handleAddSchedule = () => {

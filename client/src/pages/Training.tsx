@@ -38,6 +38,7 @@ export default function Training() {
       const res = await api.get(`/api/training?category=${activeCategory}`)
       return res.data
     },
+    staleTime: 1000 * 60 * 10,
   })
 
   const toggleOpen = (id: string) => {

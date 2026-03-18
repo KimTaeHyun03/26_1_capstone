@@ -25,7 +25,7 @@ export default function Home() {
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated)
   const navigate = useNavigate()
 
-  const { data: pets = [], isLoading } = useQuery<Pet[]>({
+  const { data: pets = [], isLoading, isError } = useQuery<Pet[]>({
     queryKey: ['pets'],
     queryFn: async () => {
       const res = await api.get('/api/pets')
@@ -41,6 +41,8 @@ export default function Home() {
 
       {isLoading ? (
         <div className="text-center py-12 text-gray-400 text-sm">불러오는 중...</div>
+      ) : isError ? (
+        <div className="text-center py-12 text-red-400 text-sm">데이터를 불러올 수 없습니다</div>
       ) : pets.length === 0 ? (
         <div className="text-center py-12">
           <p className="text-4xl mb-3">🐾</p>

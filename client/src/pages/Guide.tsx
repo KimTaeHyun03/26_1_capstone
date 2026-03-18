@@ -32,6 +32,7 @@ export default function Guide() {
       const res = await api.get(`/api/guide?species=${species}`)
       return res.data
     },
+    staleTime: 1000 * 60 * 10,
   })
 
   const filtered = items.filter((item) => item.category === selectedCategory)
