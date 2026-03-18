@@ -26,7 +26,7 @@
 | # | 기능 | 설명 |
 |---|------|------|
 | ① | 초보 보호자 가이드 | 종류별 사육 방법, 준비물, 주의사항 단계별 안내 |
-| ⑤ | 위험 음식 검색 | 유해 식품 검색, 위험도·증상 정보 제공 |
+| ⑤ | 위험 음식 검색 | 유해 식품 검색, 위험도·증상 정보 제공. DB에 없는 음식은 Gemini AI 채팅으로 문의 가능 |
 | ⑦ | 훈련 가이드 | 기초 훈련~행동 교정 단계별 방법 제공 |
 
 ### 2-2. 외부 API 연동 기능
@@ -111,6 +111,7 @@ API 키 등 민감 정보는 **절대 프론트엔드(브라우저)에 노출하
   - 무료 티어: 분당 15 req, 일 1,500 req → 캡스톤 수준에서 사실상 무료
   - Claude API 대비 비용 부담 없이 유사한 성능 제공
   - 수의학 프롬프트 설계로 ③⑧ 기능 구현
+  - **개발 방침**: Gemini 연동 기능(③ Health, ⑤ foods/chat, ⑧ AiDiagnosis)을 모두 구현 완료한 후, 일괄적으로 프롬프트 튜닝 진행
 
 ### 3-7. 외부 API
 | API | 용도 | 비고 |
@@ -357,8 +358,9 @@ users (1) ──< pets (N) ──< feeding_schedules (N)
 **주목할 설계:**
 - `training_guides.steps`를 JSON 컬럼으로 설계 → 훈련 단계가 가변적이므로 JSON이 적합
 - `dangerous_foods`, `guide_content`, `training_guides`는 정적 콘텐츠 테이블로, SQL 파일로 직접 작성 후 Supabase에 import
-  - `dangerous_foods`: ASPCA 자료 기반 직접 입력 (data_sources.md 참고)
+  - `dangerous_foods`: ASPCA 자료 기반 직접 입력 (data/data_sources.md 참고)
   - `guide_content`: Gemini로 초안 생성 후 검토·수정
+    - claude로 초안 생성, 검토, 수정함
   - `training_guides`: Gemini로 초안 생성 후 검토·수정
 - `users` 테이블은 `public.users`를 별도 생성 → 닉네임, 프로필 사진 등 커스텀 컬럼 저장 가능. 회원가입 시 서버에서 `auth.users`와 `public.users` 동시 생성
 
@@ -418,6 +420,7 @@ users (1) ──< pets (N) ──< feeding_schedules (N)
 | GET | `/api/health/:petId` | 건강 기록 조회 |
 | POST | `/api/health` | 건강 체크 기록 저장 |
 | GET | `/api/foods/search?q=` | 위험 음식 검색 |
+| POST | `/api/foods/chat` | DB에 없는 음식 AI 안전성 문의 (Gemini) |
 | GET | `/api/guide?species=` | 보호자 가이드 조회 |
 | GET | `/api/training?species=` | 훈련 가이드 조회 |
 | GET | `/api/map/hospitals?lat=&lng=` | 주변 동물병원 검색 |
@@ -483,10 +486,10 @@ VAPID_PRIVATE_KEY=
 |------|------|------|------|
 | [X] | 1주 | 프로젝트 셋업 (React+TS, Node.js, Supabase, Cloudtype) | 인프라 |
 | [X] | 2주 | 인증(로그인·회원가입), 반려동물 등록 | 기반 기능 |
-| [X] | 3~4주 | ①③⑤⑦ 콘텐츠 기반 기능 | DB 중심 |
-| [X] | 5~6주 | ②⑥ 급식 알림·산책 판단 | 외부 API |
-| [X] | 7~8주 | ④ 네이버 지도 기반 병원·보호소 찾기 | 외부 API |
-| [X] | 9~10주 | ⑧ AI 기능 (Gemini API 프롬프트 설계) | AI |
+| [X] | 3~4주 | 초보 보호자 가이드·증상 기반 건강 체크·위험 음식 검색·훈련 가이드 콘텐츠 기반 기능 | DB 중심 |
+| [X] | 5~6주 | 급식 알림·급여량 계산기·산책 가능 여부 판단 | 외부 API |
+| [O] | 7~8주 | 동물병원·보호소 찾기 (네이버 지도 기반) | 외부 API |
+| [X] | 9~10주 | AI 병명 예측·병원 추천 (Gemini API 프롬프트 설계) | AI |
 | [X] | 11주 | UI/UX 개선, 반응형 마무리 | 품질 |
 | [X] | 12주 | 테스트, 버그 수정, 발표 준비 | 마무리 |
 
@@ -514,13 +517,78 @@ VAPID_PRIVATE_KEY=
 
 ```
 D:/ysu_26_1/capstone/pet_management/
-├── plan.md        # 과제 계획서 (기능 목록, 참여자, 성과물 유형)
-├── dev-plan.md    # 개발 구현 계획 (기술 스택, DB 설계, 일정)
-├── research.md    # 본 파일
-└── .git/          # Git 저장소 초기화 완료 (main 브랜치, origin 원격 연결됨)
+├── client/                             # React 프론트엔드
+│   ├── public/
+│   │   └── sw.js                       # Service Worker (Web Push, 미구현)
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── layout/                 # AppLayout, Header, BottomNav
+│   │   │   └── PrivateRoute.tsx        ✅
+│   │   ├── lib/
+│   │   │   ├── axios.ts                ✅ baseURL, 토큰 인터셉터, 401 리다이렉트
+│   │   │   ├── supabase.ts             ✅ anon key 클라이언트
+│   │   │   ├── naver.ts                ✅ 지도 SDK 로더, KATEC→WGS84 변환, 마커 생성
+│   │   │   └── weather.ts              ⬜ (5~6주차)
+│   │   ├── pages/
+│   │   │   ├── auth/
+│   │   │   │   ├── Login.tsx           ✅
+│   │   │   │   └── Register.tsx        ✅
+│   │   │   ├── Guide.tsx               ✅
+│   │   │   ├── Food.tsx                ✅
+│   │   │   ├── Health.tsx              ✅ Gemini 연동
+│   │   │   ├── Training.tsx            ⬜ (3~4주차)
+│   │   │   ├── Feeding.tsx             ⬜ (5~6주차)
+│   │   │   ├── Walk.tsx                ⬜ (5~6주차)
+│   │   │   ├── Map.tsx                 ✅ 네이버 지도 + 병원·보호소 검색
+│   │   │   ├── AiDiagnosis.tsx         ⬜ (9~10주차)
+│   │   │   ├── Home.tsx                ⬜
+│   │   │   └── Pets.tsx                ⬜
+│   │   ├── store/
+│   │   │   ├── authSlice.ts            ✅
+│   │   │   ├── petSlice.ts             ✅
+│   │   │   └── index.ts                ✅
+│   │   ├── App.tsx                     ✅
+│   │   └── main.tsx                    ✅
+│   ├── .env.development                # git 제외
+│   ├── .env.example                    ✅
+│   └── package.json
+├── server/                             # Node.js 백엔드
+│   ├── src/
+│   │   ├── controllers/
+│   │   │   ├── auth.ts                 ✅
+│   │   │   ├── pets.ts                 ✅
+│   │   │   ├── guide.ts                ✅
+│   │   │   ├── foods.ts                ✅
+│   │   │   ├── health.ts               ✅ Gemini 연동
+│   │   │   └── map.ts                  ✅ 네이버 로컬 검색 (병원·보호소)
+│   │   ├── routes/
+│   │   │   ├── auth.ts                 ✅
+│   │   │   ├── pets.ts                 ✅
+│   │   │   ├── guide.ts                ✅
+│   │   │   ├── foods.ts                ✅
+│   │   │   ├── health.ts               ✅
+│   │   │   └── map.ts                  ✅
+│   │   ├── middleware/
+│   │   │   └── auth.ts                 ✅ JWT 인증 미들웨어
+│   │   ├── lib/
+│   │   │   ├── supabase.ts             ✅ service_role 클라이언트
+│   │   │   └── weather.ts              ⬜ (5~6주차)
+│   │   └── index.ts                    ✅
+│   ├── .env                            # git 제외
+│   ├── .env.example                    ✅
+│   └── package.json
+├── data/
+│   ├── guide_content.sql               ✅ 강아지·고양이 각 5카테고리
+│   └── dangerous_foods.sql             ✅ ASPCA 자료 기반 23개
+├── supabase_schema.sql                 ✅ 8개 테이블 + RLS + 트리거
+├── progress.md                         ✅ 작업 진행 현황
+├── todo.md                             ✅ 완료/미완료 체크리스트
+├── git_branch.md                       ✅ 브랜치 전략 및 현황
+├── CLAUDE.md                           ✅ AI 작업 지침
+├── plan.md                             # 과제 계획서
+├── dev-plan.md                         # 개발 구현 계획
+└── research.md                         # 본 파일
 ```
-
-실제 앱 코드는 아직 없음. 계획 단계.
 
 ---
 

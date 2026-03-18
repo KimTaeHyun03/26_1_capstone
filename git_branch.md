@@ -9,15 +9,16 @@
 ```
 main                    ← 배포용 (항상 안정)
 develop                 ← 개발 통합
-├── feature/auth        ← 로그인·회원가입
-├── feature/pets        ← 반려동물 등록·관리
-├── feature/guide       ← ① 초보 보호자 가이드
+├── feature/server-core    ← 백엔드 코어 (인증·반려동물 CRUD)
+├── feature/frontend-core  ← 프론트엔드 코어 (Redux, axios, 로그인·회원가입)
+├── feature/pets           ← 반려동물 등록·관리
+├── feature/guide          ← ① 초보 보호자 가이드
+├── feature/food           ← ⑤ 위험 음식 검색
 ├── feature/feeding     ← ② 급식 알림·계산기
 ├── feature/health      ← ③ 증상 건강 체크
 ├── feature/map         ← ④ 동물병원·보호소 지도
-├── feature/food        ← ⑤ 위험 음식 검색
 ├── feature/walk        ← ⑥ 산책 가능 여부
-├── feature/training    ← ⑦ 훈련 가이드
+├── feature/training    ← ⑦ 훈련 가이드 (**작업 중**)
 ├── feature/ai          ← ⑧ AI 병명 예측
 └── hotfix/버그명       ← 긴급 버그 수정
 ```
