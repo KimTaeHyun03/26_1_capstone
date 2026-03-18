@@ -1,7 +1,7 @@
 # 작업 진행 현황 요약
 
-> 기준일: 2026-03-17
-> 브랜치: feature/map (현재 작업 중)
+> 기준일: 2026-03-18
+> 브랜치: feature/walk (현재 작업 중)
 
 ---
 
@@ -49,6 +49,8 @@
 | ⑤ 위험 음식 검색 | ✅ `/api/foods/search` | ✅ `Food.tsx` | ✅ | ASPCA 자료 기반 23개 항목 |
 | ⑤ 음식 AI 채팅 | ✅ `/api/foods/chat` | ✅ `Food.tsx` | - | Gemini 2.5 Flash 연동 |
 | ⑦ 훈련 가이드 | ✅ `/api/training` | ✅ `Training.tsx` | ✅ | 강아지 전용, 13개 항목 |
+| ② 급식 알림·급여량 계산기 | ✅ `/api/feeding` | ✅ `Feeding.tsx` | - | Web Push + node-cron |
+| ⑥ 산책 가능 여부 판단 | ✅ `/api/walk` | ✅ `Walk.tsx` | - | 기상청 초단기실황 API |
 
 ### 5단계 — 정적 콘텐츠 데이터
 | 항목 | 상태 | 비고 |
@@ -66,16 +68,6 @@
 ---
 
 ## 미완료 작업
-
-### 4단계 — 기능 페이지 (5~6주차)
-- [ ] ② `Feeding.tsx` — 급식 알림·급여량 계산기
-  - [ ] `/api/feeding` 백엔드
-  - [ ] Service Worker (Web Push)
-  - [ ] `/api/push/subscribe`, `/api/push/unsubscribe`
-  - [ ] 서버 cron job (node-cron)
-- [ ] ⑥ `Walk.tsx` — 산책 가능 여부
-  - [ ] `server/src/lib/weather.ts` (격자 좌표 변환)
-  - [ ] `/api/walk` 백엔드
 
 ### 4단계 — 기능 페이지 (9~10주차)
 - [ ] ⑧ `AiDiagnosis.tsx` — AI 병명 예측·병원 추천
@@ -105,7 +97,9 @@
 | `feature/food` | 머지 완료 | 위험 음식 검색 + AI 채팅 |
 | `feature/health` | 머지 완료 | 증상 건강 체크 (Gemini 2.5 Flash) |
 | `feature/training` | 머지 완료 | 훈련 가이드 |
-| `feature/map` | **작업 중** | 동물병원·보호소 찾기 (네이버 지도) |
+| `feature/map` | 머지 완료 | 동물병원·보호소 찾기 (네이버 지도) |
+| `feature/feeding` | 머지 완료 | 급식 알림·급여량 계산기 |
+| `feature/walk` | **작업 중** | 산책 가능 여부 판단 (기상청 API) |
 
 ---
 
@@ -120,8 +114,8 @@ pet_management/
 │   ├── lib/
 │   │   ├── axios.ts         ✅
 │   │   ├── supabase.ts      ✅
-│   │   ├── naver.ts         ✅ (7~8주차)
-│   │   └── weather.ts       ⬜ (5~6주차)
+│   │   ├── naver.ts         ✅
+│   │   └── weather.ts       ✅
 │   ├── pages/
 │   │   ├── auth/Login.tsx   ✅
 │   │   ├── auth/Register.tsx ✅
@@ -130,8 +124,8 @@ pet_management/
 │   │   ├── Health.tsx       ✅
 │   │   ├── Training.tsx     ✅ 강아지 전용
 │   │   ├── Map.tsx          ✅ 네이버 지도 + 검색
-│   │   ├── Feeding.tsx      ⬜
-│   │   ├── Walk.tsx         ⬜
+│   │   ├── Feeding.tsx      ✅
+│   │   ├── Walk.tsx         ✅
 │   │   ├── AiDiagnosis.tsx  ⬜
 │   │   ├── Home.tsx         ⬜
 │   │   └── Pets.tsx         ⬜
@@ -147,7 +141,10 @@ pet_management/
 │   │   ├── foods.ts         ✅
 │   │   ├── health.ts        ✅
 │   │   ├── training.ts      ✅
-│   │   └── map.ts           ✅
+│   │   ├── map.ts           ✅
+│   │   ├── feeding.ts       ✅
+│   │   ├── push.ts          ✅
+│   │   └── walk.ts          ✅
 │   ├── routes/
 │   │   ├── auth.ts          ✅
 │   │   ├── pets.ts          ✅
@@ -155,11 +152,15 @@ pet_management/
 │   │   ├── foods.ts         ✅
 │   │   ├── health.ts        ✅
 │   │   ├── training.ts      ✅
-│   │   └── map.ts           ✅
+│   │   ├── map.ts           ✅
+│   │   ├── feeding.ts       ✅
+│   │   ├── push.ts          ✅
+│   │   └── walk.ts          ✅
 │   ├── middleware/auth.ts   ✅
 │   ├── lib/
 │   │   ├── supabase.ts      ✅
-│   │   └── weather.ts       ⬜
+│   │   ├── weather.ts       ✅
+│   │   └── cron.ts          ✅
 │   └── index.ts             ✅
 ├── data/
 │   ├── data_sources.md      ✅
