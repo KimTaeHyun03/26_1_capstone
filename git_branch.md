@@ -20,7 +20,8 @@ develop                 ← 개발 통합
 ├── feature/walk        ← ⑥ 산책 가능 여부
 ├── feature/training    ← ⑦ 훈련 가이드 (**작업 중**)
 ├── feature/ai          ← ⑧ AI 병명 예측
-└── hotfix/버그명       ← 긴급 버그 수정
+├── hotfix/버그명       ← 긴급 버그 수정
+└── fix/neutered-toggle ← 중성화 여부 토글 스위치 동그라미 미이동 버그 수정
 ```
 
 ---
