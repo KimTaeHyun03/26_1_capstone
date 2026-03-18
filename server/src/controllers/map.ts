@@ -4,13 +4,24 @@ import axios from 'axios'
 const NAVER_CLIENT_ID = process.env.NAVER_CLIENT_ID!
 const NAVER_CLIENT_SECRET = process.env.NAVER_CLIENT_SECRET!
 
-// 네이버 로컬 검색 공통 함수
-async function searchLocal(query: string, lat: string, lng: string) {
+// Haversine 거리 계산 (km)
+function getDistance(lat1: number, lng1: number, lat2: number, lng2: number): number {
+  const R = 6371
+  const dLat = ((lat2 - lat1) * Math.PI) / 180
+  const dLng = ((lng2 - lng1) * Math.PI) / 180
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos((lat1 * Math.PI) / 180) * Math.cos((lat2 * Math.PI) / 180) * Math.sin(dLng / 2) ** 2
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+}
+
+// 네이버 로컬 검색 공통 함수 — 많이 가져와서 가까운 순 5개 반환
+async function searchLocal(query: string, userLat: number, userLng: number) {
   const res = await axios.get('https://openapi.naver.com/v1/search/local.json', {
     params: {
       query,
-      display: 20,
-      sort: 'comment',
+      display: 5,
+      sort: 'random',
     },
     headers: {
       'X-Naver-Client-Id': NAVER_CLIENT_ID,
@@ -18,17 +29,24 @@ async function searchLocal(query: string, lat: string, lng: string) {
     },
   })
 
-  const items = res.data.items.map((item: any) => ({
-    title: item.title.replace(/<[^>]*>/g, ''), // HTML 태그 제거
-    address: item.address,
-    roadAddress: item.roadAddress,
-    telephone: item.telephone,
-    link: item.link,
-    mapx: item.mapx, // 카텍계(KATEC) X 좌표
-    mapy: item.mapy, // 카텍계(KATEC) Y 좌표
-  }))
+  const items = res.data.items.map((item: any) => {
+    const lat = parseInt(item.mapy) / 10_000_000
+    const lng = parseInt(item.mapx) / 10_000_000
+    const distance = getDistance(userLat, userLng, lat, lng)
+    return {
+      title: item.title.replace(/<[^>]*>/g, ''),
+      address: item.address,
+      roadAddress: item.roadAddress,
+      telephone: item.telephone,
+      link: item.link,
+      mapx: item.mapx,
+      mapy: item.mapy,
+      distance: Math.round(distance * 10) / 10, // km, 소수점 1자리
+    }
+  })
 
-  return items
+  // 거리 오름차순 정렬 후 5개 반환
+  return items.sort((a: any, b: any) => a.distance - b.distance).slice(0, 5)
 }
 
 // GET /api/map/hospitals?lat=&lng=&query=
@@ -41,9 +59,9 @@ export async function getHospitals(req: Request, res: Response) {
   }
 
   try {
-    const searchQuery = (query as string) || '동물병원'
-    const items = await searchLocal(searchQuery, lat as string, lng as string)
-    console.log(`[map/hospitals] 검색 완료 - query: ${searchQuery}, 결과: ${items.length}개`)
+    const keyword = query ? `${query} 동물병원` : '동물병원'
+    const items = await searchLocal(keyword, parseFloat(lat as string), parseFloat(lng as string))
+    console.log(`[map/hospitals] 검색 완료 - query: ${keyword}, 결과: ${items.length}개`)
     res.json(items)
   } catch (err: any) {
     console.error('[map/hospitals] 네이버 검색 오류:', err?.response?.data || err?.message)
@@ -61,9 +79,9 @@ export async function getShelters(req: Request, res: Response) {
   }
 
   try {
-    const searchQuery = (query as string) || '유기동물 보호소'
-    const items = await searchLocal(searchQuery, lat as string, lng as string)
-    console.log(`[map/shelters] 검색 완료 - query: ${searchQuery}, 결과: ${items.length}개`)
+    const keyword = query ? `${query} 동물보호소` : '유기동물 보호소'
+    const items = await searchLocal(keyword, parseFloat(lat as string), parseFloat(lng as string))
+    console.log(`[map/shelters] 검색 완료 - query: ${keyword}, 결과: ${items.length}개`)
     res.json(items)
   } catch (err: any) {
     console.error('[map/shelters] 네이버 검색 오류:', err?.response?.data || err?.message)

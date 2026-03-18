@@ -12,6 +12,7 @@ interface PlaceItem {
   link: string
   mapx: string
   mapy: string
+  distance?: number
 }
 
 const TAB_CONFIG: { key: TabType; label: string; query: string; color: string }[] = [
@@ -25,9 +26,13 @@ export default function Map() {
   const [selectedItem, setSelectedItem] = useState<PlaceItem | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null)
+  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number }>({
+    lat: 37.5640,
+    lng: 126.9979,
+  })
   const [mapReady, setMapReady] = useState(false)
   const [searchInput, setSearchInput] = useState('')
+  const [areaName, setAreaName] = useState('서울 중구')
 
   const mapRef = useRef<HTMLDivElement>(null)
   const mapInstanceRef = useRef<any>(null)
@@ -41,6 +46,13 @@ export default function Map() {
       .catch((err) => setError(err.message))
   }, [])
 
+  // 초기 로드 시 기본 위치(서울 중구)로 자동 검색
+  useEffect(() => {
+    if (mapReady) {
+      fetchPlaces(userLocation.lat, userLocation.lng, activeTab, '서울 중구')
+    }
+  }, [mapReady])
+
   // 지도 렌더링 (mapReady + userLocation 모두 준비 후)
   useEffect(() => {
     if (!mapReady || !userLocation || !mapRef.current) return
@@ -48,7 +60,7 @@ export default function Map() {
 
     mapInstanceRef.current = new window.naver.maps.Map(mapRef.current, {
       center: new window.naver.maps.LatLng(userLocation.lat, userLocation.lng),
-      zoom: 14,
+      zoom: 16,
     })
 
     // 내 위치 마커
@@ -127,7 +139,7 @@ export default function Map() {
           params: {
             lat,
             lng,
-            query: customQuery || tabConfig.query,
+            ...(customQuery ? { query: customQuery } : {}),
           },
         })
         const data: PlaceItem[] = res.data
@@ -143,6 +155,23 @@ export default function Map() {
     [mapReady, showMarkers]
   )
 
+  // 좌표 → 지역명 추출 (OpenStreetMap Nominatim, API 키 불필요)
+  const getAreaName = async (lat: number, lng: number): Promise<string> => {
+    try {
+      const res = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&accept-language=ko`,
+        { headers: { 'User-Agent': 'PetManagementApp' } }
+      )
+      const data = await res.json()
+      const addr = data.address ?? {}
+      const city = addr.city || addr.town || addr.county || ''
+      const borough = addr.borough || addr.suburb || ''
+      return borough ? `${city} ${borough}` : city
+    } catch {
+      return ''
+    }
+  }
+
   // 현재 위치 가져오기
   const getLocation = useCallback(() => {
     if (!navigator.geolocation) {
@@ -152,10 +181,12 @@ export default function Map() {
 
     setIsLoading(true)
     navigator.geolocation.getCurrentPosition(
-      (pos) => {
+      async (pos) => {
         const loc = { lat: pos.coords.latitude, lng: pos.coords.longitude }
         setUserLocation(loc)
-        fetchPlaces(loc.lat, loc.lng, activeTab)
+        const area = await getAreaName(loc.lat, loc.lng)
+        setAreaName(area)
+        fetchPlaces(loc.lat, loc.lng, activeTab, area || undefined)
       },
       () => {
         setIsLoading(false)
@@ -170,17 +201,13 @@ export default function Map() {
     setSelectedItem(null)
     setSearchInput('')
     if (userLocation) {
-      fetchPlaces(userLocation.lat, userLocation.lng, tab)
+      fetchPlaces(userLocation.lat, userLocation.lng, tab, areaName || undefined)
     }
   }
 
   // 직접 검색
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
-    if (!userLocation) {
-      setError('먼저 내 위치를 불러와주세요.')
-      return
-    }
     if (!searchInput.trim()) return
     fetchPlaces(userLocation.lat, userLocation.lng, activeTab, searchInput.trim())
   }
@@ -247,16 +274,11 @@ export default function Map() {
 
       {/* 지도 */}
       <div ref={mapRef} className="flex-shrink-0 h-56 bg-gray-100 mx-4 rounded-xl overflow-hidden">
-        {!userLocation && (
-          <div className="w-full h-full flex items-center justify-center text-gray-400 text-sm">
-            위치를 불러오면 지도가 표시됩니다
-          </div>
-        )}
       </div>
 
       {/* 결과 목록 */}
       <div className="flex-1 overflow-y-auto px-4 py-3 space-y-2">
-        {items.length === 0 && !isLoading && userLocation && (
+        {items.length === 0 && !isLoading && (
           <p className="text-center text-gray-400 text-sm py-6">검색 결과가 없습니다.</p>
         )}
 
@@ -276,6 +298,9 @@ export default function Map() {
                   <p className="text-xs text-gray-500 mt-0.5 truncate">
                     {item.roadAddress || item.address}
                   </p>
+                  {item.distance !== undefined && (
+                    <p className="text-xs text-blue-400 mt-0.5">{item.distance}km</p>
+                  )}
                   {item.telephone && (
                     <a
                       href={`tel:${item.telephone}`}

@@ -78,14 +78,14 @@
 
 ### 5~6주차 — 외부 API (알림·날씨)
 
-- [ ] ② `Feeding.tsx` — 급식 알림·급여량 계산기 (RER 공식 기반)
-  - [ ] `/api/feeding` 서버 라우터·컨트롤러
-  - [ ] `public/sw.js` — Service Worker (Web Push 수신)
-  - [ ] `/api/push/subscribe`, `/api/push/unsubscribe` 라우터
-  - [ ] 서버 cron job 설정 (node-cron, 매분 feeding_schedules 체크 → 푸시 발송)
-- [ ] ⑥ `Walk.tsx` — 산책 가능 여부 판단 (기상청 초단기실황 API)
-  - [ ] `/api/walk` 서버 라우터·컨트롤러
-  - [ ] `server/src/lib/weather.ts` — lat/lng → 격자 좌표 변환 + API 호출
+- [x] ② `Feeding.tsx` — 급식 알림·급여량 계산기 (RER 공식 기반)
+  - [x] `/api/feeding` 서버 라우터·컨트롤러
+  - [x] `public/sw.js` — Service Worker (Web Push 수신)
+  - [x] `/api/push/subscribe`, `/api/push/unsubscribe` 라우터
+  - [x] 서버 cron job 설정 (node-cron, 매분 feeding_schedules 체크 → 푸시 발송)
+- [x] ⑥ `Walk.tsx` — 산책 가능 여부 판단 (기상청 초단기실황 API)
+  - [x] `/api/walk` 서버 라우터·컨트롤러
+  - [x] `server/src/lib/weather.ts` — lat/lng → 격자 좌표 변환 + API 호출
 
 ### 7~8주차 — 네이버 지도
 

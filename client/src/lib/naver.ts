@@ -20,7 +20,7 @@ export function loadNaverMapScript(): Promise<void> {
     }
 
     const script = document.createElement('script')
-    script.src = `https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${clientId}`
+    script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${clientId}`
     script.onload = () => resolve()
     script.onerror = () => reject(new Error('네이버 지도 스크립트 로드 실패'))
     document.head.appendChild(script)

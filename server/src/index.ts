@@ -11,6 +11,7 @@ import trainingRouter from './routes/training'
 import mapRouter from './routes/map'
 import feedingRouter from './routes/feeding'
 import pushRouter from './routes/push'
+import walkRouter from './routes/walk'
 import { startFeedingCron } from './lib/cron'
 
 dotenv.config()
@@ -38,7 +39,7 @@ app.use('/api/feeding', feedingRouter)
 app.use('/api/training', trainingRouter)
 app.use('/api/map', mapRouter)
 app.use('/api/push', pushRouter)
-// app.use('/api/walk', walkRouter)
+app.use('/api/walk', walkRouter)
 // app.use('/api/ai', aiRouter)
 
 startFeedingCron()
