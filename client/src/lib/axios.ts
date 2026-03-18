@@ -5,12 +5,15 @@ const api = axios.create({
   withCredentials: true, // HttpOnly 쿠키 자동 전송
 })
 
-// 응답 인터셉터 — 401 시 로그인 페이지로 이동
+// 응답 인터셉터 — 401 시 로그인 페이지로 이동 (로그인·회원가입 페이지 제외)
 api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      window.location.href = '/login'
+      const path = window.location.pathname
+      if (path !== '/login' && path !== '/register') {
+        window.location.href = '/login'
+      }
     }
     return Promise.reject(error)
   }
