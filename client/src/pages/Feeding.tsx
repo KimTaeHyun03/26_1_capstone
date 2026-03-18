@@ -406,8 +406,8 @@ export default function Feeding() {
                             }`}
                           >
                             <span
-                              className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform ${
-                                s.enabled ? 'translate-x-4' : 'translate-x-0.5'
+                              className={`absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform ${
+                                s.enabled ? 'translate-x-[18px]' : 'translate-x-0'
                               }`}
                             />
                           </button>
