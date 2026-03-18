@@ -20,6 +20,8 @@ develop                 ← 개발 통합
 ├── feature/walk        ← ⑥ 산책 가능 여부
 ├── feature/training    ← ⑦ 훈련 가이드 (**작업 중**)
 ├── feature/ai          ← ⑧ AI 병명 예측
+├── feature/home        ← 홈 대시보드 (반려동물 목록)
+├── fix/neutered-toggle ← 중성화 토글·종류 선택 버그 수정
 └── hotfix/버그명       ← 긴급 버그 수정
 ```
 
