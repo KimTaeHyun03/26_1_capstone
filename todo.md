@@ -70,6 +70,9 @@
   - [x] `/api/guide` 서버 라우터·컨트롤러
 - [x] ③ `Health.tsx` — 증상 기반 건강 체크 (체크박스 → Gemini 분석 → 결과 저장)
   - [x] `/api/health` 서버 라우터·컨트롤러
+  - [ ] 건강 체크 이전 기록 조회 UI (날짜·시간 + 증상 + AI 결과, 최신순)
+    - [ ] `GET /api/health/logs` 엔드포인트 추가
+    - [ ] Health.tsx 하단 "이전 기록" 섹션 추가
 - [x] ⑤ `Food.tsx` — 위험 음식 검색 (pg_trgm 전문 검색) + DB 없는 음식 AI 채팅 문의
   - [x] `/api/foods/search` 서버 라우터·컨트롤러
   - [x] `/api/foods/chat` 서버 라우터·컨트롤러 (Gemini — 음식 안전성 문의)
@@ -83,6 +86,9 @@
   - [x] `public/sw.js` — Service Worker (Web Push 수신)
   - [x] `/api/push/subscribe`, `/api/push/unsubscribe` 라우터
   - [x] 서버 cron job 설정 (node-cron, 매분 feeding_schedules 체크 → 푸시 발송)
+  - [ ] 1회 권장 급여량 표시 (나이 기반 횟수 계산)
+    - 성견·성묘(1살 이상) → 하루 2회, 1살 미만 → 하루 3~4회
+    - 하루 권장량 ÷ 횟수 = 1회 급여량 함께 표시
 - [x] ⑥ `Walk.tsx` — 산책 가능 여부 판단 (기상청 초단기실황 API)
   - [x] `/api/walk` 서버 라우터·컨트롤러
   - [x] `server/src/lib/weather.ts` — lat/lng → 격자 좌표 변환 + API 호출
@@ -95,16 +101,17 @@
 
 ### 9~10주차 — AI 기능
 
-- [ ] ⑧ `AiDiagnosis.tsx` — AI 병명 예측·병원 추천 (Gemini API) ⚠️ code_review.md #10: 현재 라우트 연결됐지만 빈 페이지
-  - [ ] `/api/ai/diagnosis` 서버 라우터·컨트롤러
-  - [ ] Gemini 수의학 프롬프트 설계
-  - [ ] 증상 입력 UI (텍스트 or 체크박스)
-  - [ ] 분석 결과 표시 (병명 예측 + 병원 방문 권고)
+- [ ] ⑧ `AiDiagnosis.tsx` → **반려동물 전용 AI 챗봇**으로 변경
+  - 기존 병명 예측은 Health.tsx와 기능 중복 → 자유 대화형 챗봇으로 방향 전환
+  - [ ] `/api/ai/chat` 서버 라우터·컨트롤러
+  - [ ] Gemini 멀티턴 대화 (대화 히스토리 관리)
+  - [ ] 반려동물 정보(종·나이·체중) 컨텍스트 활용한 맞춤형 답변
+  - [ ] 채팅 UI (말풍선 형태, 사용자·AI 메시지 구분)
 
 ### AI 튜닝 (전체 AI 기능 구현 완료 후)
 
 > Gemini 연동 기능 전부 구현 완료 후 일괄 튜닝 진행
-> 대상: ③ Health, ⑤ foods/chat, ⑧ AiDiagnosis
+> 대상: ③ Health, ⑤ foods/chat, ⑧ AI 챗봇
 
 - [ ] Health 분석 프롬프트 튜닝
 - [ ] foods/chat 프롬프트 튜닝
@@ -112,7 +119,25 @@
 
 ### 11~12주차 — 마무리
 
-- [ ] UI/UX 개선, 반응형 마무리
+- [ ] 헤더 Bell 아이콘 → 알림 히스토리 페이지 연결
+  - [ ] 급식 알림 발송 내역 표시 (반려동물명·시간·급여량)
+  - [ ] `GET /api/push/history` 엔드포인트 추가
+  - [ ] 알림 히스토리 페이지 또는 드롭다운 UI
+- [ ] UI/UX 개선, 반응형 마무리 (브랜치: `feature/ui-mobile`)
+  - **즉시 수정 (높음)**
+    - [ ] Feeding.tsx — 수정/삭제 버튼 터치 영역 확대 (`text-xs py-1` → `py-2`)
+    - [ ] Feeding.tsx — 토글 버튼 크기 확대 (`w-9 h-5` → `w-11 h-6`)
+    - [ ] Feeding.tsx — 스케줄 추가 폼 모바일 세로 배치로 변경
+    - [ ] Map.tsx — 상세보기 버튼 터치 영역 확대 (`py-1.5` → `py-2.5`)
+  - **중간 우선순위**
+    - [ ] 전체 페이지 `text-xs` → `text-sm` 으로 가독성 개선 (한글)
+    - [ ] Feeding.tsx — 고정 너비 입력 필드 (`w-28`, `w-20`) 반응형으로 변경
+    - [ ] Login/Register.tsx — 로그인·회원가입 버튼 높이 확대 (`py-2` → `py-3`)
+    - [ ] Walk.tsx — 날씨 정보 라벨 가독성 개선
+  - **낮은 우선순위**
+    - [ ] Map.tsx — 지도 높이 모바일 최적화
+    - [ ] Guide.tsx — 카테고리 탭 가로 스크롤 처리
+    - [ ] BottomNav.tsx — 레이블 크기 및 터치 영역 검토
 - [ ] 전체 테스트 및 버그 수정
 - [ ] Cloudtype 배포 설정 (프론트 + 백엔드)
 - [ ] 발표 준비

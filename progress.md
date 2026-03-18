@@ -70,9 +70,10 @@
 ## 미완료 작업
 
 ### 4단계 — 기능 페이지 (9~10주차)
-- [ ] ⑧ `AiDiagnosis.tsx` — AI 병명 예측·병원 추천
-  - [ ] `/api/ai/diagnosis` 백엔드
-  - [ ] Gemini 수의학 프롬프트 설계
+- [ ] ⑧ `AiDiagnosis.tsx` → **반려동물 전용 AI 챗봇** (병명 예측 → 방향 변경)
+  - [ ] `/api/ai/chat` 백엔드
+  - [ ] Gemini 멀티턴 대화 + 반려동물 컨텍스트 맞춤 답변
+  - [ ] 채팅 UI (말풍선 형태)
 
 ### AI 튜닝 (전체 AI 기능 구현 완료 후)
 - [ ] Health, foods/chat, AiDiagnosis 프롬프트 일괄 튜닝
