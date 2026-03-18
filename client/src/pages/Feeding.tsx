@@ -343,6 +343,7 @@ export default function Feeding() {
                   />
                   <input
                     type="number"
+                    min="1"
                     value={newAmount}
                     onChange={(e) => setNewAmount(e.target.value)}
                     placeholder={dailyAmount ? `권장 ${dailyAmount}g` : '급여량(g)'}
@@ -378,6 +379,7 @@ export default function Feeding() {
                           />
                           <input
                             type="number"
+                            min="1"
                             value={editAmount}
                             onChange={(e) => setEditAmount(e.target.value)}
                             className="border rounded px-2 py-1 text-sm w-20"

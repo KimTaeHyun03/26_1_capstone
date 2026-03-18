@@ -31,7 +31,9 @@ export function startFeedingCron() {
 
     if (!schedules || schedules.length === 0) return
 
-    console.log(`[cron] ${currentTime} 급식 알림 대상: ${schedules.length}건`)
+    if (process.env.NODE_ENV !== 'production') {
+      console.log(`[cron] ${currentTime} 급식 알림 대상: ${schedules.length}건`)
+    }
 
     for (const schedule of schedules) {
       const pet = schedule.pets as any
@@ -63,7 +65,9 @@ export function startFeedingCron() {
               .from('push_subscriptions')
               .delete()
               .eq('endpoint', sub.endpoint)
-            console.log('[cron] 만료된 구독 삭제:', sub.endpoint)
+            if (process.env.NODE_ENV !== 'production') {
+              console.log('[cron] 만료된 구독 삭제:', sub.endpoint)
+            }
           } else {
             console.error('[cron] 푸시 발송 오류:', err?.message)
           }
