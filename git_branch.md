@@ -23,6 +23,8 @@ develop                 ← 개발 통합
 ├── feature/home        ← 홈 대시보드 (반려동물 목록)
 ├── fix/neutered-toggle    ← 중성화 토글·종류 선택 버그 수정
 ├── fix/server-validation  ← 서버 측 입력 검증 추가
+├── fix/token-security     ← 토큰 localStorage → HttpOnly 쿠키 변경
+├── fix/weather-timeout    ← 기상청 API 타임아웃 설정
 └── hotfix/버그명          ← 긴급 버그 수정
 ```
 
